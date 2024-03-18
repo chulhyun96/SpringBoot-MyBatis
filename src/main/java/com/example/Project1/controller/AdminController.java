@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
     private final ProductService productService;
+
     @PostMapping("/product")
     public String addProduct(@ModelAttribute Product saveProduct) {
         Product product = productService.save(saveProduct);
 
-        return "redirect:";
+        return "redirect:/index";
     }
 }
