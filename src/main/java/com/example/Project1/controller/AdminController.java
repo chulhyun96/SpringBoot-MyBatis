@@ -17,9 +17,8 @@ public class AdminController {
     private final ProductService productService;
 
     @PostMapping("/product")
-    public String addProduct(@ModelAttribute Product saveProduct, Model model) {
-        Product product = productService.save(saveProduct);
-        model.addAttribute("product", product);
+    public String addProduct(@ModelAttribute Product productToSave, Model model) {
+        model.addAttribute("product", productService.save(productToSave));
         return "redirect:/index";
     }
 }
