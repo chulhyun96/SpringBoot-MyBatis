@@ -16,25 +16,23 @@ class AdminControllerTest {
     void dependencyInjection() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(TestConfig.class);
         String[] beanDefinitionNames = context.getBeanDefinitionNames();
-        Object bean = null;
-
         for (String beanDefinitionName : beanDefinitionNames) {
             BeanDefinition beanDefinition = context.getBeanDefinition(beanDefinitionName);
 
-            if (beanDefinition.getRole() == BeanDefinition.ROLE_APPLICATION) {
-                bean = context.getBean(beanDefinitionName);
+            if (beanDefinition.getRole() == beanDefinition.ROLE_APPLICATION) {
+                Object bean = context.getBean(beanDefinitionName);
                 Assertions.assertThat(bean).isNotNull();
-                System.out.println("bean = "+ bean);
             }
         }
     }
     @Test
     void addProduct() {
+        // given
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(TestConfig.class);
         AdminController adminController = context.getBean(AdminController.class);
-        RedirectAttributes mockModel = mock(RedirectAttributes.class);
+        RedirectAttributes mockRa = mock(RedirectAttributes.class);
 
-        // given
+        // when
         Product product = new Product();
         product.setName("test");
         product.setSupplyPrice(30000);
@@ -43,12 +41,10 @@ class AdminControllerTest {
         product.setDescription("testDescription");
         System.out.println("product = " + product);
 
-        // when
-        adminController.addProduct(product,mockModel);
+        adminController.addProduct(product,mockRa);
 
         // then
         Assertions.assertThat(product.getName()).isEqualTo("test");
-
 
     }
 }
