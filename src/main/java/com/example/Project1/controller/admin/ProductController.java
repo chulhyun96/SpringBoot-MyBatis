@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/products")
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/admin/products")
 public class ProductController {
     private final ProductService service;
     @GetMapping
@@ -26,3 +26,4 @@ public class ProductController {
         return "admin/products/list";
     }
 }
+
