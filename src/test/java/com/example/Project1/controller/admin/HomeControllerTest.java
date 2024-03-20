@@ -1,7 +1,6 @@
-package com.example.Project1.controller;
+package com.example.Project1.controller.admin;
 
 import com.example.Project1.config.TestConfig;
-import com.example.Project1.controller.admin.ProductController;
 import com.example.Project1.entity.Product;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -80,7 +79,15 @@ class HomeControllerTest {
         // then
         Assertions.assertThat(list.size()).isEqualTo(1);
         Assertions.assertThat(viewPath).isEqualTo("admin/products/list");
-
-
+    }
+    @Test
+    @DisplayName("HomeController index 페이지")
+    void homeControllerTest() {
+        // given
+        HomeController bean = context.getBean(HomeController.class);
+        // when
+        String index = bean.index();
+        // then
+        Assertions.assertThat(index).isEqualTo("admin/index");
     }
 }

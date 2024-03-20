@@ -8,6 +8,5 @@ import java.util.List;
 @Mapper
 public interface ProductRepository {
     Product save(Product product);
-
     List<Product> findAll();
 }

@@ -15,7 +15,6 @@ public class ProductServiceImpl implements ProductService {
     public Product save(Product product) {
         return repository.save(product);
     }
-
     @Override
     public List<Product> getList() {
         return repository.findAll();
