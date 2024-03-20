@@ -1,7 +1,7 @@
 package com.example.Project1.config;
 
 
-import com.example.Project1.controller.admin.HomeController;
+import com.example.Project1.controller.admin.ProductController;
 import com.example.Project1.repository.ProductRepository;
 import com.example.Project1.service.ProductService;
 import com.example.Project1.service.ProductServiceImpl;
@@ -20,8 +20,8 @@ public class TestConfig {
         return new ProductServiceImpl(productRepository);
     }
     @Bean
-    public HomeController adminController(ProductService productService) {
-        return new HomeController(productService);
+    public ProductController productController(ProductService productService) {
+        return new ProductController(productService);
     }
 }
 
