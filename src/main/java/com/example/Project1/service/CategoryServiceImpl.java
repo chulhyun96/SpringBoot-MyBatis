@@ -16,4 +16,9 @@ public class CategoryServiceImpl implements CategoryService{
     public List<Category> getList() {
         return repository.findAll();
     }
+
+    @Override
+    public Category getCategoryById(Long id) {
+        return repository.findById(id);
+    }
 }

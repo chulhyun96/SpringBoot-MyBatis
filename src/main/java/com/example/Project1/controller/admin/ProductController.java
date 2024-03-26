@@ -36,13 +36,16 @@ public class ProductController {
         return "admin/products/detail";
     }
     @PostMapping
-    public String reg(@ModelAttribute Product product) {
+    public String reg(@ModelAttribute Product product, Long categoryId) {
+        Category category = categoryService.getCategoryById(categoryId);
+        product.setCategory(category);
+        service.reg(product);
         return "redirect:/admin/products";
     }
     @GetMapping("/reg")
     public String regForm(Model model) {
-        List<Category> category = categoryService.getList();
-        model.addAttribute("category", category);
+        List<Category> categories = categoryService.getList();
+        model.addAttribute("categories", categories);
         return "admin/products/reg";
     }
 }

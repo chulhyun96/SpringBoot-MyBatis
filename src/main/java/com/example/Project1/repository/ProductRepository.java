@@ -8,8 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface ProductRepository {
-    Product save(Product product);
     List<ProductView> findAll();
-
     ProductView findById(Long id);
+    void reg(Product product);
 }
