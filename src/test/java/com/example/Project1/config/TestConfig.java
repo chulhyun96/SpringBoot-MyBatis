@@ -2,7 +2,10 @@ package com.example.Project1.config;
 
 import com.example.Project1.controller.admin.HomeController;
 import com.example.Project1.controller.admin.ProductController;
+import com.example.Project1.repository.CategoryRepository;
 import com.example.Project1.repository.ProductRepository;
+import com.example.Project1.service.CategoryService;
+import com.example.Project1.service.CategoryServiceImpl;
 import com.example.Project1.service.ProductService;
 import com.example.Project1.service.ProductServiceImpl;
 import org.mockito.Mockito;
@@ -19,13 +22,20 @@ public class TestConfig {
     public ProductRepository productRepository() {
         return Mockito.mock(ProductRepository.class);
     }
+    @Bean CategoryRepository categoryRepository() {
+        return Mockito.mock(CategoryRepository.class);
+    }
+    @Bean
+    public ProductController productController(ProductService productService, CategoryService categoryService) {
+        return new ProductController(productService,categoryService);
+    }
     @Bean
     public ProductService productService(ProductRepository productRepository) {
         return new ProductServiceImpl(productRepository);
     }
     @Bean
-    public ProductController productController(ProductService productService) {
-        return new ProductController(productService);
+    public CategoryService categoryService(CategoryRepository categoryRepository) {
+        return new CategoryServiceImpl(categoryRepository);
     }
 }
 
