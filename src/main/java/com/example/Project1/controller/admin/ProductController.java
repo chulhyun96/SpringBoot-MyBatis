@@ -30,6 +30,7 @@ public class ProductController {
     @GetMapping
     public String list(Model model) {
         List<ProductView> list = service.getList();
+        log.info("List = {}", list);
         model.addAttribute("list", list);
         return "admin/products/list";
 
