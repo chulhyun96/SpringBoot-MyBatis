@@ -45,6 +45,5 @@ public class ProductController {
         model.addAttribute("category", category);
         return "admin/products/reg";
     }
-
 }
 
