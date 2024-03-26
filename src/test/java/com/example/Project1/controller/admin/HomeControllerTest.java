@@ -39,7 +39,7 @@ class HomeControllerTest {
     @DisplayName("상품 등록 테스트")
     void addProduct() {
         // given
-        /*ProductController productController = context.getBean(ProductController.class);*/
+        ProductController productController = context.getBean(ProductController.class);
         RedirectAttributes mockRa = mock(RedirectAttributes.class);
 
         // when
@@ -74,11 +74,11 @@ class HomeControllerTest {
 
         // when
         List<Product> list = List.of(product);
-        /*String viewPath = bean.list(model);*/
+        String viewPath = bean.list(model);
 
         // then
         Assertions.assertThat(list.size()).isEqualTo(1);
-        /*Assertions.assertThat(viewPath).isEqualTo("admin/products/list");*/
+        Assertions.assertThat(viewPath).isEqualTo("admin/products/list");
     }
     @Test
     @DisplayName("HomeController index 페이지")
