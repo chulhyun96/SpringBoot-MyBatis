@@ -1,15 +1,13 @@
 package com.example.Project1.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "member", schema = "admin")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

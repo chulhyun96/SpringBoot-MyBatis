@@ -5,6 +5,7 @@ import com.example.Project1.entity.Category;
 import com.example.Project1.entity.Product;
 import com.example.Project1.entity.ProductView;
 import com.example.Project1.service.CategoryService;
+import com.example.Project1.service.DetailImgService;
 import com.example.Project1.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,34 +15,42 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@Slf4j
+@RequestMapping("admin/products")
+@Controller("adminProductController")
 @RequiredArgsConstructor
-@RequestMapping("/admin/products")
+@Slf4j
 public class ProductController {
+
     private final ProductService service;
+
     private final CategoryService categoryService;
+
+    private final DetailImgService detailImgService;
 
     @GetMapping
     public String list(Model model) {
-        log.info("ProductController = {}", "ProductController list");
         List<ProductView> list = service.getList();
-        model.addAttribute("list",list);
+        model.addAttribute("list", list);
         return "admin/products/list";
+
     }
-    @GetMapping("/{id}")
+
+    @GetMapping("{id}")
     public String detail(@PathVariable Long id, Model model) {
-        ProductView findById = service.getById(id);
-        model.addAttribute("product", findById);
+        ProductView product = service.getById(id);
+        model.addAttribute("product", product);
         return "admin/products/detail";
     }
+
     @PostMapping
-    public String reg(@ModelAttribute Product product, Long categoryId) {
-        Category category = categoryService.getCategoryById(categoryId);
-        product.setCategory(category);
+    public String reg(@ModelAttribute Product product, Long categoryId, String paths) {
+        product.setCategoryId(categoryId);
         service.reg(product);
+
+        detailImgService.regAll(paths, product.getId());
         return "redirect:/admin/products";
     }
+
     @GetMapping("/reg")
     public String regForm(Model model) {
         List<Category> categories = categoryService.getList();
@@ -49,4 +58,5 @@ public class ProductController {
         return "admin/products/reg";
     }
 }
+
 

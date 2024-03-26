@@ -1,17 +1,15 @@
 package com.example.Project1.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "product", schema = "admin")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,14 +35,6 @@ public class Product {
     @Column(name = "reg_date", nullable = false)
     private LocalDate regDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @OneToMany(mappedBy = "product")
-    private Set<DetailImg> detailImgs = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "product")
-    private Set<Order> orders = new LinkedHashSet<>();
+    private Long categoryId;
 
 }

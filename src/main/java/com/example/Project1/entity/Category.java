@@ -1,13 +1,11 @@
 package com.example.Project1.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "category", schema = "admin")
+@Data
+@Builder
+@AllArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

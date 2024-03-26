@@ -1,13 +1,11 @@
 package com.example.Project1.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "detail_img", schema = "admin")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DetailImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +14,5 @@ public class DetailImg {
 
     @Column(name = "path", length = 5000)
     private String path;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    private Long productId;
 }

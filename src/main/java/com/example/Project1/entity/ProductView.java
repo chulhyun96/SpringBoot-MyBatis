@@ -1,52 +1,25 @@
 package com.example.Project1.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "product_view", schema = "admin")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductView {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Integer id;
-
-    @Column(name = "name", nullable = false)
+    private Long id;
     private String name;
-
-    @Column(name = "reg_date", nullable = false)
-    private LocalDate regDate;
-
-    @Column(name = "selling_price", nullable = false)
-    private Integer sellingPrice;
-
-    @Column(name = "supplying_price", nullable = false)
-    private Integer supplyingPrice;
-
-    @Column(name = "img")
+    private Date regDate;
+    private int sellingPrice;
+    private int supplyingPrice;
     private String img;
-
-    @Lob
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "category_id", nullable = false)
-    private Integer categoryId;
-
-    @Column(name = "category_name", length = 500)
     private String categoryName;
-
-    @Column(name = "di_id", nullable = false)
-    private Integer diId;
-
-    @Column(name = "path", length = 5000)
-    private String path;
-
-    @Column(name = "di_product_id", nullable = false)
-    private Integer diProductId;
-
+    private List<DetailImg> detailImgs;
 }
