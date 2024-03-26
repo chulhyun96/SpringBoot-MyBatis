@@ -1,6 +1,7 @@
 package com.example.Project1.controller.admin;
 
 import com.example.Project1.config.TestConfig;
+import com.example.Project1.entity.Category;
 import com.example.Project1.entity.Product;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -37,8 +39,6 @@ public class ProductControllerTest {
     @Test
     @DisplayName("상품 등록 테스트")
     void regProduct() {
-
-
         // when
         controller.reg(product);
         // then
@@ -67,5 +67,20 @@ public class ProductControllerTest {
         // then
         Assertions.assertThat(product.getId()).isEqualTo(1);
         Assertions.assertThat(detailPath).isEqualTo("admin/products/detail");
+    }
+
+    @Test
+    @DisplayName("카테고리 불러오기")
+    void getCategoryList() {
+        //given
+        Category category = new Category();
+        category.setId(1);
+        category.setName("Outwear");
+        List<Category> list = new ArrayList<>();
+        // when
+        list.add(category);
+
+        // then
+        Assertions.assertThat(list.size()).isEqualTo(1);
     }
 }
