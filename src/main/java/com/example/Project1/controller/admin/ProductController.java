@@ -29,6 +29,8 @@ public class ProductController {
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
         ProductView findById = service.getById(id);
+        model.addAttribute("product", findById);
+        return "admin/products/detail";
     }
 }
 

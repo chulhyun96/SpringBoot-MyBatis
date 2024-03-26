@@ -10,4 +10,6 @@ import java.util.List;
 public interface ProductRepository {
     Product save(Product product);
     List<ProductView> findAll();
+
+    ProductView findById(Long id);
 }
