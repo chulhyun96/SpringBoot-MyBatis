@@ -22,7 +22,7 @@
     <select id="findAll" resultMap="ProductView">
         SELECT
         *
-        FROM product
+        FROM product_view
     </select>
 
     <select id="findById" resultMap="ProductView">

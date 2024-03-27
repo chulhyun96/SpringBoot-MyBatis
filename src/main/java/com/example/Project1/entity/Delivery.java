@@ -1,20 +1,14 @@
 package com.example.Project1.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "delivery", schema = "admin")
+@Data
+@Builder
+@AllArgsConstructor
 public class Delivery {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
-
-    @Column(name = "status")
     private Byte status;
 
 }
