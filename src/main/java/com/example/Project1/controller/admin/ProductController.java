@@ -39,6 +39,7 @@ public class ProductController {
     @GetMapping("{id}")
     public String detail(@PathVariable Long id, Model model) {
         ProductView product = service.getById(id);
+        log.info("Product = {}", product);
         model.addAttribute("product", product);
         return "admin/products/detail";
     }

@@ -17,8 +17,8 @@
             <id property="id" column="di_id"/>
             <result property="path" column="path"/>
         </collection>
-
     </resultMap>
+
     <select id="findAll" resultMap="ProductView">
         SELECT
         *
