@@ -1,4 +1,4 @@
-function goInsert() {
+function edit() {
     const form = document.querySelector("#frm");
     const formData = new FormData(form);
     const formDataString = new URLSearchParams(formData).toString();
