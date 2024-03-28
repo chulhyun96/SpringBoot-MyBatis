@@ -26,4 +26,9 @@ public class ProductServiceImpl implements ProductService {
     public void reg(Product product) {
         repository.reg(product);
     }
+
+    @Override
+    public void edit(Product product) {
+        repository.updateProductById(product);
+    }
 }

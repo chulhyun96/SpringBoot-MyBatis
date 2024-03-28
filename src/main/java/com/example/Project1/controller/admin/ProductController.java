@@ -1,18 +1,13 @@
 package com.example.Project1.controller.admin;
 
-
 import com.example.Project1.entity.Category;
 import com.example.Project1.entity.Product;
 import com.example.Project1.entity.ProductView;
 import com.example.Project1.service.CategoryService;
 import com.example.Project1.service.DetailImgService;
 import com.example.Project1.service.ProductService;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,17 +31,15 @@ public class ProductController {
         List<ProductView> list = service.getList();
         model.addAttribute("list", list);
         return "admin/products/list";
-
     }
 
     @PutMapping
-    public String edit(HttpEntity<String> httpEntity) {
-        String json = httpEntity.getBody();
-        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-
-        Gson gson = new Gson();
+    @ResponseBody
+    public String edit(@RequestBody Product product) {
+       service.edit(product);
         return "redirect:/admin/products";
     }
+
     @GetMapping("{id}")
     public String detail(@PathVariable Long id, Model model) {
         ProductView product = service.getById(id);
@@ -70,5 +63,3 @@ public class ProductController {
         return "admin/products/reg";
     }
 }
-
-

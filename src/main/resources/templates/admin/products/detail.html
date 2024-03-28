@@ -17,6 +17,7 @@
             <input class="m:10" type="file" name="paths" multiple/>
         </div>
         <form action="/admin/products" method="put" id="frm" class="d:flex  flex-direction:column m:5 w:100p">
+            <input type="hidden" name="id" class="id" th:value="${product.id}">
             <label>상품이름</label>
             <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6" name="name"
                    th:value="${product.name}">
@@ -33,7 +34,8 @@
             <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6 " th:value="${product.regDate}">
 
 
-            <button type="submit" class="n-btn" onclick="goInsert()">수정</button>
+            <button type="submit" class="n-btn" onclick="edit()">수정</button>
+            <a type="button" class="n-btn n-btn-color:sub mt:1" th:href="@{/admin/products}">목록</a>
         </form>
     </section>
 

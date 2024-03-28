@@ -11,4 +11,5 @@ public interface ProductRepository {
     List<ProductView> findAll();
     ProductView findById(Long id);
     void reg(Product product);
+    void updateProductById(Product product);
 }

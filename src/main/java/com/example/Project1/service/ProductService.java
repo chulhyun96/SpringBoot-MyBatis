@@ -10,4 +10,5 @@ public interface ProductService {
     List<ProductView> getList();
     ProductView getById(Long id);
     void reg(Product product);
+    void edit(Product product);
 }
