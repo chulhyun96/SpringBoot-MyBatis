@@ -32,7 +32,7 @@
         where id = #{id}
     </select>
 
-    <update id="editById" parameterType="Product">
+    <update id="updateProductById" parameterType="Product">
         update product set name = #{name},selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice} where id =
         #{id}
     </update>
@@ -41,4 +41,5 @@
         insert into product(name,selling_price, supplying_price, description ,img,category_id)
         values (#{name}, #{sellingPrice}, #{supplyingPrice}, #{description}, #{img},#{categoryId})
     </insert>
+
 </mapper>

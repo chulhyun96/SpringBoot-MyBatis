@@ -33,11 +33,11 @@ public class ProductController {
         return "admin/products/list";
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     @ResponseBody
     public String edit(@RequestBody Product product) {
        service.edit(product);
-        return "redirect:/admin/products";
+        return "success";
     }
 
     @GetMapping("{id}")
