@@ -5,8 +5,9 @@ import com.example.Project1.repository.DetailImgRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,18 +18,14 @@ public class DetailImgServiceImpl implements DetailImgService{
         List<DetailImg> dimgs = splitPath(paths, productId);
         repository.reg(dimgs);
     }
-
     private List<DetailImg> splitPath(String paths, Long productId) {
-        String[] pathsArr = paths.split(",");
-        List<DetailImg> dimgs = new ArrayList<>();
-
-        for (String path : pathsArr) {
-            DetailImg dimg = new DetailImg();
-
-            dimg.setPath(path);
-            dimg.setProductId(productId);
-            dimgs.add(dimg);
-        }
-        return dimgs;
+        // Use streams for concise and expressive processing
+        return Arrays.stream(paths.split(","))
+                .map(path -> DetailImg.
+                        builder().
+                        path(path).
+                        productId(productId).
+                        build())
+                .collect(Collectors.toList());
     }
 }

@@ -37,8 +37,8 @@
         <div>
             <label>
                 <span>사진</span>
-                <input type="file" name/>
-            </label>="img"
+                <input type="file" name="img"/>
+            </label>
         </div>
 
         <div>
@@ -48,15 +48,13 @@
             </label>
         </div>
         <label for="lang">카테고리</label>
-        <select name="categoryId" class="n-dropdown">
-
+        <select id="lang" name="categoryId" class="n-dropdown">
             <option th:each="category : ${categories}"
                     th:value="${category.id}"
                     value="javascript"
                     class="n-dropdown-item"
                     th:text="${category.name}">JavaScript
             </option>
-
         </select>
 
         <div class="d:flex flex-direction:row justify-content:end">

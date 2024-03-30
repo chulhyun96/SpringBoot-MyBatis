@@ -11,4 +11,5 @@ public interface ProductService {
     ProductView getById(Long id);
     void reg(Product product);
     void edit(Product product);
+    void deleteAllById(List<Long> deleteId);
 }

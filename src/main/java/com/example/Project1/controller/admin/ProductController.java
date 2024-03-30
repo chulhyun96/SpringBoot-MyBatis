@@ -19,6 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductController {
+    private static final String PRODUCTS_VIEW = "/admin/products";
+    private static final String REDIRECT = "redirect:";
 
     private final ProductService service;
 
@@ -30,21 +32,22 @@ public class ProductController {
     public String list(Model model) {
         List<ProductView> list = service.getList();
         model.addAttribute("list", list);
-        return "admin/products/list";
+        return PRODUCTS_VIEW + "/list";
     }
 
-    @PutMapping("/edit")
+    @PutMapping
     @ResponseBody
     public String edit(@RequestBody Product product) {
        service.edit(product);
+       log.info("UpdateProductMethod CALL = {}", product);
         return "success";
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
         ProductView product = service.getById(id);
         model.addAttribute("product", product);
-        return "admin/products/detail";
+        return PRODUCTS_VIEW + "/detail";
     }
 
     @PostMapping
@@ -53,13 +56,14 @@ public class ProductController {
         service.reg(product);
 
         detailImgService.regAll(paths, product.getId());
-        return "redirect:/admin/products";
+        return REDIRECT + PRODUCTS_VIEW;
     }
 
     @GetMapping("/reg")
     public String regForm(Model model) {
         List<Category> categories = categoryService.getList();
         model.addAttribute("categories", categories);
-        return "admin/products/reg";
+        return PRODUCTS_VIEW + REDIRECT;
     }
+
 }
