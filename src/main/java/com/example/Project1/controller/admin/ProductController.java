@@ -29,9 +29,10 @@ public class ProductController {
     private final DetailImgService detailImgService;
 
     @GetMapping
-    public String list(@RequestParam(required = false) String type,@RequestParam(required = false) String keyword, Model model) {
-        log.info("type = {}, keyword = {}", type, keyword);
-        List<ProductView> list = service.getList(type,keyword);
+    public String list(@RequestParam(required = false) String type,
+                       @RequestParam(defaultValue = "") String keyword,
+                       Model model) {
+        List<ProductView> list = service.getList(type,keyword.trim());
         model.addAttribute("list", list);
         return PRODUCTS_VIEW + "/list";
     }
