@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ProductService {
     List<ProductView> getList();
+    List<ProductView> getList(String type, String keyword);
     ProductView getById(Long id);
     void reg(Product product);
     void edit(Product product);

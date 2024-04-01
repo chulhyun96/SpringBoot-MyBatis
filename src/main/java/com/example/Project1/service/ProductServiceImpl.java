@@ -14,7 +14,12 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
     @Override
     public List<ProductView> getList() {
-        return repository.findAll();
+        return repository.findAll(null, null);
+    }
+
+    @Override
+    public List<ProductView> getList(String type, String keyword) {
+        return repository.findAll(type, keyword);
     }
 
     @Override

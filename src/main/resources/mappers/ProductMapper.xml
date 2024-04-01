@@ -23,6 +23,15 @@
         SELECT
         *
         FROM product_view
+        <where>
+            <if test="type == 'title'">
+                name like '%${keyword}%'
+            </if>
+
+            <if test="type == 'description'">
+                description like '%${keyword}%'
+            </if>
+        </where>
     </select>
 
     <select id="findById" resultMap="ProductView">
@@ -31,6 +40,7 @@
         FROM product_view
         where id = #{id}
     </select>
+
 
     <update id="updateProductById" parameterType="Product">
         UPDATE product

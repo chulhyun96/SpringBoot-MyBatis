@@ -29,13 +29,14 @@ public class ProductController {
     private final DetailImgService detailImgService;
 
     @GetMapping
-    public String list(Model model) {
-        List<ProductView> list = service.getList();
+    public String list(@RequestParam(required = false) String type,@RequestParam(required = false) String keyword, Model model) {
+        log.info("type = {}, keyword = {}", type, keyword);
+        List<ProductView> list = service.getList(type,keyword);
         model.addAttribute("list", list);
         return PRODUCTS_VIEW + "/list";
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseBody
     public String edit(@RequestBody Product product) {
        service.edit(product);
@@ -67,7 +68,6 @@ public class ProductController {
     @PostMapping("/delete")
     public String delete(@RequestParam List<Long> ids) {
         service.deleteAllById(ids);
-        log.info("Deleted all = {} ", ids.size());
         return REDIRECT + PRODUCTS_VIEW;
     }
 }
