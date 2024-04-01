@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("admin/products")
+@RequestMapping("/admin/products")
 @Controller("adminProductController")
 @RequiredArgsConstructor
 @Slf4j
@@ -39,7 +39,6 @@ public class ProductController {
     @ResponseBody
     public String edit(@RequestBody Product product) {
        service.edit(product);
-       log.info("UpdateProductMethod CALL = {}", product);
         return "success";
     }
 
@@ -51,7 +50,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public String reg(@ModelAttribute Product product, Long categoryId, String paths) {
+    public String reg(Product product, Long categoryId, String paths) {
         product.setCategoryId(categoryId);
         service.reg(product);
 
@@ -65,5 +64,10 @@ public class ProductController {
         model.addAttribute("categories", categories);
         return PRODUCTS_VIEW + REDIRECT;
     }
-
+    @PostMapping("/delete")
+    public String delete(@RequestParam List<Long> ids) {
+        service.deleteAllById(ids);
+        log.info("Deleted all = {} ", ids.size());
+        return REDIRECT + PRODUCTS_VIEW;
+    }
 }

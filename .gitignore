@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### 디비 삭제
+application.yml
+applications.properties

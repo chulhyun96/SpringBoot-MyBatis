@@ -33,8 +33,8 @@
     </select>
 
     <update id="updateProductById" parameterType="Product">
-        update product set name = #{name},selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice} where id =
-        #{id}
+        UPDATE product
+        SET name = #{name},selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice}, description = #{description}  where id = #{id}
     </update>
 
     <insert id="reg" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
@@ -42,4 +42,10 @@
         values (#{name}, #{sellingPrice}, #{supplyingPrice}, #{description}, #{img},#{categoryId})
     </insert>
 
+    <delete id="deleteAll" parameterType="list">
+        DELETE FROM product WHERE id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

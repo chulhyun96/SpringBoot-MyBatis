@@ -10,40 +10,52 @@
 <body>
 <main layout:fragment="main" class="flex flex-col w-full n-panel n-main-panel">
 
-    <table class="n-table n-table-style:striped">
-        <thead>
-        <tr>
-            <th scope="col">상품 이름</th>
-            <th scope="col">판매가</th>
-            <th scope="col">공급가</th>
-            <th scope="col">이미지</th>
-            <th scope="col">설명</th>
-            <th scope="col">등록일자</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="product: ${list}">
-            <td scope="col" th:text="${product.name}">상품 이름</td>
-            <td scope="col" th:text="${product.sellingPrice}">판매가</td>
-            <td scope="col" th:text="${product.supplyingPrice}">공급가</td>
-            <td scope="col">
-                <a href="" th:href="@{/admin/products/{id}(id=${product.id})}">
-                    <img id="imgId" th:src="${product.img}" alt="첨부이미지" class="w:1"/>
-                </a>
-            </td>
-            <td scope="col" th:text="${product.description}">설명</td>
-            <td scope="col" th:text="${product.regDate}">등록일자</td>
-        </tr>
-
-        </tbody>
-    </table>
-    <div>
-        <a href="products/reg"
-           class="n-btn
-               n-btn-size:3">
-            등록
-        </a>
-    </div>
+    <form action="products/delete" method="post" class="flex flex-col w-full" >
+        <table class="n-table n-table-style:striped">
+            <thead>
+            <tr>
+                <th scope="col">상품 이름</th>
+                <th scope="col">판매가</th>
+                <th scope="col">공급가</th>
+                <th scope="col">이미지</th>
+                <th scope="col">설명</th>
+                <th scope="col">등록일자</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product: ${list}">
+                <td>
+                    <label>
+                        <input
+                                name="ids"
+                                type="checkbox"
+                                class="n-toggle n-toggle-type:check-box n-toggle-size:2"
+                                th:value="${product.id}"
+                        >
+                    </label>
+                </td>
+                <td scope="col" th:text="${product.name}">상품 이름</td>
+                <td scope="col" th:text="${product.sellingPrice}">판매가</td>
+                <td scope="col" th:text="${product.supplyingPrice}">공급가</td>
+                <td scope="col">
+                    <a href="" th:href="@{/admin/products/{id}(id=${product.id})}">
+                        <img id="imgId" th:src="${product.img}" alt="첨부이미지" class="w:1"/>
+                    </a>
+                </td>
+                <td scope="col" th:text="${product.description}">설명</td>
+                <td scope="col" th:text="${product.regDate}">등록일자</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="d:flex jc:end mt:3">
+            <div class="mr:3">
+                <a href="products/reg" class="n-btn n-btn-size:3"> 등록 </a>
+            </div>
+            <button class="n-btn n-btn-size:3 n-btn-color:accent mr:3">
+                삭제
+            </button>
+        </div>
+    </form>
 </main>
 </body>
 </html>
