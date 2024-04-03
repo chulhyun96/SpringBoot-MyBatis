@@ -19,7 +19,6 @@ public class DetailImgServiceImpl implements DetailImgService{
         repository.reg(dimgs);
     }
     private List<DetailImg> splitPath(String paths, Long productId) {
-        // Use streams for concise and expressive processing
         return Arrays.stream(paths.split(","))
                 .map(path -> DetailImg.
                         builder().
