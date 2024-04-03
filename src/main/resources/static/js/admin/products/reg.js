@@ -3,6 +3,7 @@ window.addEventListener("load", function (node, child) {
     var imgInput = document.querySelector(".img-input");
     var imgBox = document.querySelector(".img-box");
 
+
     imgInput.oninput = function (e) {
         for (var key in imgInput.files[0])
             console.log(key, ":", imgInput.files[0][key])
@@ -24,7 +25,7 @@ window.addEventListener("load", function (node, child) {
             img.src = e.target.result;
             imgBox.innerHTML = "";
             imgBox.append(img)
-            // imgBox.classList.add("fade-in");
+
 
             setTimeout(() => {
                 img.classList.add("slide-in")

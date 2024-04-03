@@ -6,6 +6,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!--자바 스크립트 등록시 이미지 삽입-->
+    <script src="/js/admin/products/reg.js"></script>
+    <style>
+        .img-box img {
+            height: 300px;
+        }
+    </style>
+
 </head>
 <body>
 <main layout:fragment="main" class="flex flex-col w-full n-panel n-main-panel">
@@ -31,13 +39,18 @@
         <div>
             <label>
                 <span>상품 설명</span>
-                <textarea type="text" name="description" class="height:7"></textarea>
+                <textarea name="description" class="height:7"></textarea>
             </label>
         </div>
         <div>
             <label>
-                <span>사진</span>
-                <input type="file" name="img"/>
+                <span>대표 사진</span>
+                <input class="img-input d:none border" type="file" name="img"/>
+                <span class="img-box d:flex flex-direction:row">
+                    <span class="d:flex jc:center al-items:center w:5 h:5 bg-color:base-3">
+                        <span class="icon icon:camera icon-size:5  icon-color:base-1"></span>
+                    </span>
+                </span>
             </label>
         </div>
 

@@ -55,7 +55,6 @@ public class ProductController {
     public String reg(Product product, Long categoryId, String paths) {
         product.setCategoryId(categoryId);
         service.reg(product);
-
         detailImgService.regAll(paths, product.getId());
         return REDIRECT + PRODUCTS_VIEW;
     }
@@ -64,7 +63,7 @@ public class ProductController {
     public String regForm(Model model) {
         List<Category> categories = categoryService.getList();
         model.addAttribute("categories", categories);
-        return PRODUCTS_VIEW + REDIRECT;
+        return PRODUCTS_VIEW + "/reg";
     }
     @PostMapping("/delete")
     public String delete(@RequestParam List<Long> ids) {

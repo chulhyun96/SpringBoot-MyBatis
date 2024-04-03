@@ -10,7 +10,8 @@
 <body>
 <main layout:fragment="main" class="n-panel n-main-panel d:flex flex-direction:column">
 
-    <form action="/admin/products" class="n-form md:n-field-label-position:left border:0 w:3/5 mx:auto my:10">
+    <!--검색-->
+    <form class="n-form md:n-field-label-position:left border:0 w:3/5 mx:auto my:10">
         <div>
             <select class="border" name="type">
                 <option th:selected="${{param.type}} == 'title'" value="title">제목</option>
@@ -20,7 +21,9 @@
         <input type="text" placeholder="검색어를 입력하세요" name="keyword" th:value="${#strings.trim(param.searchKeyword)}">
         <button class="n-btn n-btn-type:outline-box">검색</button>
     </form>
+    <!--검색-->
 
+    <!--item 삭제-->
     <form action="products/delete" method="post" class="flex flex-col w-full" >
         <table class="n-table n-table-style:striped">
             <thead>
@@ -45,9 +48,11 @@
                 <td scope="col" th:text="${product.sellingPrice}">판매가</td>
                 <td scope="col" th:text="${product.supplyingPrice}">공급가</td>
                 <td scope="col">
+                    <!--클릭 상세 페이지-->
                     <a href="" th:href="@{/admin/products/{id}(id=${product.id})}">
                         <img id="imgId" th:src="${product.img}" alt="첨부이미지" class="w:1"/>
                     </a>
+                    <!--클릭 상세 페이지-->
                 </td>
                 <td scope="col" th:text="${product.description}">설명</td>
                 <td scope="col" th:text="${product.regDate}">등록일자</td>
@@ -55,14 +60,17 @@
             </tbody>
         </table>
         <div class="d:flex jc:end mt:3">
+            <!--등록 하러가기-->
             <div class="mr:3">
-                <a href="products/reg" class="n-btn n-btn-size:3"> 등록 </a>
+                <a href="/admin/products/reg" class="n-btn n-btn-size:3"> 등록 </a>
             </div>
+            <!--등록 하러가기-->
             <button class="n-btn n-btn-size:3 n-btn-color:accent mr:3">
                 삭제
             </button>
         </div>
     </form>
+    <!--item 삭제-->
 </main>
 </body>
 </html>
