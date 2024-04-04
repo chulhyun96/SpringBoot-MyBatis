@@ -7,11 +7,13 @@ import com.example.Project1.service.CategoryService;
 import com.example.Project1.service.DetailImgService;
 import com.example.Project1.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,8 +38,6 @@ public class ProductController {
     public String list(@RequestParam(required = false) String type,
                        @RequestParam(defaultValue = "") String keyword,
                        Model model) {
-
-
         List<ProductView> list = service.getList(type, keyword.trim());
         model.addAttribute("list", list);
         return PRODUCTS_VIEW + "/list";
@@ -58,12 +58,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public String reg(MultipartFile img,
+    public String reg(@Valid @ModelAttribute Product product, BindingResult bindingResult,MultipartFile img,
                       HttpServletRequest req,
-                      Product product,
                       Long categoryId
             /*String paths*/) throws FileUploadException {
 
+        if (bindingResult.hasFieldErrors("name")) {
+            return REDIRECT + PRODUCTS_VIEW + "/reg";
+        }
         Optional<String> productImg = uploadProductImage(img, req);
         product.setCategoryId(categoryId);
         product.setImgPath(productImg.orElseThrow(() -> new FileUploadException("File upload failed")));
@@ -82,6 +84,7 @@ public class ProductController {
     public String regForm(Model model) {
         List<Category> categories = categoryService.getList();
         model.addAttribute("categories", categories);
+        model.addAttribute("product", new Product());
         return PRODUCTS_VIEW + "/reg";
     }
 

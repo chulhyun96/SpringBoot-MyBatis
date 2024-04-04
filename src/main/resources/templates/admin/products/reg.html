@@ -18,12 +18,14 @@
 <body>
 <main layout:fragment="main" class="flex flex-col w-full n-panel n-main-panel">
     <!--등록 양식-->
-    <form method="post" action="/admin/products" class="n-form n-form-type:outline-box px:10"
-          enctype="multipart/form-data">
+    <form method="post" th:action="@{/admin/products}" class="n-form n-form-type:outline-box px:10"
+          enctype="multipart/form-data" th:object="${product}">
         <div>
             <label>
                 <span>상품 이름</span>
-                <input type="text" name="name"/>
+                <input type="text" th:field="*{name}"/>
+                <span class="error" th:if="${#fields.hasErrors('name')}"
+                      th:errors="*{name}">Name Error</span>
             </label>
         </div>
         <div>
