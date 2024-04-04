@@ -6,13 +6,17 @@ import com.example.Project1.entity.ProductView;
 import com.example.Project1.service.CategoryService;
 import com.example.Project1.service.DetailImgService;
 import com.example.Project1.service.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/admin/products")
 @Controller("adminProductController")
@@ -32,7 +36,9 @@ public class ProductController {
     public String list(@RequestParam(required = false) String type,
                        @RequestParam(defaultValue = "") String keyword,
                        Model model) {
-        List<ProductView> list = service.getList(type,keyword.trim());
+
+
+        List<ProductView> list = service.getList(type, keyword.trim());
         model.addAttribute("list", list);
         return PRODUCTS_VIEW + "/list";
     }
@@ -40,7 +46,7 @@ public class ProductController {
     @PutMapping("/{id}")
     @ResponseBody
     public String edit(@RequestBody Product product) {
-       service.edit(product);
+        service.edit(product);
         return "success";
     }
 
@@ -52,11 +58,24 @@ public class ProductController {
     }
 
     @PostMapping
-    public String reg(Product product, Long categoryId, String paths) {
+    public String reg(MultipartFile img,
+                      HttpServletRequest req,
+                      Product product,
+                      Long categoryId
+            /*String paths*/) throws FileUploadException {
+
+        Optional<String> productImg = uploadProductImage(img, req);
         product.setCategoryId(categoryId);
+        product.setImgPath(productImg.orElseThrow(() -> new FileUploadException("File upload failed")));
         service.reg(product);
-        detailImgService.regAll(paths, product.getId());
+        /*detailImgService.regAll(paths, product.getId());*/
         return REDIRECT + PRODUCTS_VIEW;
+    }
+
+    private Optional<String> uploadProductImage(MultipartFile img, HttpServletRequest req) {
+        String path = "/image/products";
+        String realPath = req.getServletContext().getRealPath(path);
+        return service.saveImg(img, realPath);
     }
 
     @GetMapping("/reg")
@@ -65,6 +84,7 @@ public class ProductController {
         model.addAttribute("categories", categories);
         return PRODUCTS_VIEW + "/reg";
     }
+
     @PostMapping("/delete")
     public String delete(@RequestParam List<Long> ids) {
         service.deleteAllById(ids);

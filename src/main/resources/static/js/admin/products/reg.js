@@ -2,8 +2,8 @@ window.addEventListener("load", function (node, child) {
 
     var imgInput = document.querySelector(".img-input");
     var imgBox = document.querySelector(".img-box");
-
-
+    var imgLabel = document.querySelector(".img-label");
+    
     imgInput.oninput = function (e) {
         for (var key in imgInput.files[0])
             console.log(key, ":", imgInput.files[0][key])

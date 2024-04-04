@@ -13,11 +13,13 @@
             height: 300px;
         }
     </style>
-
+    <!--자바 스크립트 등록시 이미지 삽입-->
 </head>
 <body>
 <main layout:fragment="main" class="flex flex-col w-full n-panel n-main-panel">
-    <form method="post" action="/admin/products" class="n-form n-form-type:outline-box px:10">
+    <!--등록 양식-->
+    <form method="post" action="/admin/products" class="n-form n-form-type:outline-box px:10"
+          enctype="multipart/form-data">
         <div>
             <label>
                 <span>상품 이름</span>
@@ -43,7 +45,7 @@
             </label>
         </div>
         <div>
-            <label>
+            <label class="img-label">
                 <span>대표 사진</span>
                 <input class="img-input d:none border" type="file" name="img"/>
                 <span class="img-box d:flex flex-direction:row">
@@ -79,6 +81,7 @@
             </div>
         </div>
     </form>
+    <!--등록 양식-->
 </main>
 </body>
 </html>

@@ -9,16 +9,19 @@
 </head>
 <body>
 <main layout:fragment="main" class="n-panel n-main-panel d:flex flex-direction:column">
-
     <!--검색-->
     <form class="n-form md:n-field-label-position:left border:0 w:3/5 mx:auto my:10">
         <div>
-            <select class="border" name="type">
-                <option th:selected="${{param.type}} == 'title'" value="title">제목</option>
-                <option th:selected="${{param.type}} == 'description'" value="description">내용</option>
-            </select>
+            <label>
+                <select class="border" name="type">
+                    <option th:selected="${param.type} == 'title'" value="title">제목</option>
+                    <option th:selected="${{param.type}} == 'description'" value="description">내용</option>
+                </select>
+            </label>
         </div>
-        <input type="text" placeholder="검색어를 입력하세요" name="keyword" th:value="${#strings.trim(param.searchKeyword)}">
+        <label>
+            <input type="text" placeholder="검색어를 입력하세요" name="keyword" th:value="${#strings.trim(param.searchKeyword)}">
+        </label>
         <button class="n-btn n-btn-type:outline-box">검색</button>
     </form>
     <!--검색-->
@@ -50,7 +53,7 @@
                 <td scope="col">
                     <!--클릭 상세 페이지-->
                     <a href="" th:href="@{/admin/products/{id}(id=${product.id})}">
-                        <img id="imgId" th:src="${product.img}" alt="첨부이미지" class="w:1"/>
+                        <img id="imgId" th:src="@{'/image/products/'+${product.img}}" alt="첨부이미지" class="w:1"/>
                     </a>
                     <!--클릭 상세 페이지-->
                 </td>

@@ -14,9 +14,8 @@ public class Product {
     private String name;
     private Integer supplyingPrice;
     private Integer sellingPrice;
-    private String img;
+    private String imgPath;
     private String description;
     private LocalDate regDate;
     private Long categoryId;
-
 }

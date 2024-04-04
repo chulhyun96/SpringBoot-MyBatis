@@ -32,6 +32,7 @@
                 description like '%${keyword}%'
             </if>
         </where>
+        ORDER BY id DESC
     </select>
 
     <select id="findById" resultMap="ProductView">
@@ -41,16 +42,17 @@
         where id = #{id}
     </select>
 
+    <insert id="reg" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
+        insert into product(name,selling_price, supplying_price, description ,img,category_id)
+        values (#{name}, #{sellingPrice}, #{supplyingPrice}, #{description}, #{imgPath},#{categoryId})
+    </insert>
 
     <update id="updateProductById" parameterType="Product">
         UPDATE product
-        SET name = #{name},selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice}, description = #{description}  where id = #{id}
+        SET name = #{name},selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice}, description =
+        #{description}, img = #{imgPath} where id = #{id}
     </update>
 
-    <insert id="reg" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
-        insert into product(name,selling_price, supplying_price, description ,img,category_id)
-        values (#{name}, #{sellingPrice}, #{supplyingPrice}, #{description}, #{img},#{categoryId})
-    </insert>
 
     <delete id="deleteAll" parameterType="list">
         DELETE FROM product WHERE id IN
@@ -58,4 +60,5 @@
             #{item}
         </foreach>
     </delete>
+
 </mapper>

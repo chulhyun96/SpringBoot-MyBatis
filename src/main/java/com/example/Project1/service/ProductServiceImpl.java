@@ -4,14 +4,21 @@ import com.example.Project1.entity.Product;
 import com.example.Project1.entity.ProductView;
 import com.example.Project1.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
+
     @Override
     public List<ProductView> getList() {
         return repository.findAll(null, null);
@@ -40,5 +47,26 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteAllById(List<Long> deleteId) {
         repository.deleteAll(deleteId);
+    }
+
+    @Override
+    public Optional<String> saveImg(MultipartFile img, String realPath) {
+        String fileName = img.getOriginalFilename();
+        if (img != null && !img.isEmpty()) {
+
+            File pathFile = new File(realPath);
+            if (!pathFile.exists()) {
+                pathFile.mkdirs();
+            }
+
+            File file = new File(realPath + File.separator + fileName);
+            try {
+                img.transferTo(file);
+                return Optional.ofNullable(fileName);
+            } catch (IOException e) {
+                log.error("[File Object Error] = {}",e.getMessage());
+            }
+        }
+        return Optional.empty();
     }
 }
