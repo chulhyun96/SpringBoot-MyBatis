@@ -59,7 +59,7 @@
                     <!--클릭 상세 페이지-->
                 </td>
                 <td scope="col" th:text="${product.description}">설명</td>
-                <td scope="col" th:text="${product.regDate}">등록일자</td>
+                <td scope="col" th:text="${#dates.format(product.regDate, 'yyyy년 M월 d일') }">등록일자</td>
             </tr>
             </tbody>
         </table>
