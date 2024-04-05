@@ -12,7 +12,7 @@
 <main layout:fragment="main" class="n-panel n-main-panel ">
     <section class="d:flex fl-grow:1 ai:center mb:8 border-bottom">
         <div>
-            <img id="imgId" th:src="${product.img}" alt="첨부이미지" class="w:7 mt:10 ml:10 p:5 border"/>
+            <img id="imgId" th:src="${product.imgPath}" alt="첨부이미지" class="w:7 mt:10 ml:10 p:5 border"/>
             <input class="m:10" type="file" name="paths" multiple/>
         </div>
         <form id="frm" class="d:flex  flex-direction:column w:100p mr:10 border-left pl:10">

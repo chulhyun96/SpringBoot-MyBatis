@@ -7,13 +7,11 @@ import com.example.Project1.service.CategoryService;
 import com.example.Project1.service.DetailImgService;
 import com.example.Project1.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,24 +56,33 @@ public class ProductController {
     }
 
     @PostMapping
-    public String reg(@Valid @ModelAttribute Product product, BindingResult bindingResult,MultipartFile img,
+    public String reg(Product product,
+                      MultipartFile img,
+                      @RequestParam("sub-img") MultipartFile[] subImgs,
                       HttpServletRequest req,
-                      Long categoryId
-            /*String paths*/) throws FileUploadException {
+                      Long categoryId) throws FileUploadException {
 
-        if (bindingResult.hasFieldErrors("name")) {
-            return REDIRECT + PRODUCTS_VIEW + "/reg";
-        }
-        Optional<String> productImg = uploadProductImage(img, req);
+        String mainImgPath = "/image/products/main";
+        Optional<String> productImg = saveImgToDir(img, req, mainImgPath);
+
+        String subImgPath = "/image/products/sub";
+        saveImgsToDir(subImgs, req, subImgPath);
+
         product.setCategoryId(categoryId);
         product.setImgPath(productImg.orElseThrow(() -> new FileUploadException("File upload failed")));
+
         service.reg(product);
-        /*detailImgService.regAll(paths, product.getId());*/
+        detailImgService.regAll(subImgs, product.getId());
         return REDIRECT + PRODUCTS_VIEW;
     }
 
-    private Optional<String> uploadProductImage(MultipartFile img, HttpServletRequest req) {
-        String path = "/image/products";
+    private void saveImgsToDir(MultipartFile[] subImgs, HttpServletRequest req, String subImgPath) {
+        for (MultipartFile subImg : subImgs) {
+            saveImgToDir(subImg, req, subImgPath);
+        }
+    }
+
+    private Optional<String> saveImgToDir(MultipartFile img, HttpServletRequest req, String path) {
         String realPath = req.getServletContext().getRealPath(path);
         return service.saveImg(img, realPath);
     }

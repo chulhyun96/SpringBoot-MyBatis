@@ -52,19 +52,19 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<String> saveImg(MultipartFile img, String realPath) {
         String fileName = img.getOriginalFilename();
+
         if (img != null && !img.isEmpty()) {
 
-            File pathFile = new File(realPath);
+            File pathFile = new File(realPath); // 인자로 들어온 경로를 기준으로 디렉토리 생성 있다면 넘어감
             if (!pathFile.exists()) {
                 pathFile.mkdirs();
             }
-
             File file = new File(realPath + File.separator + fileName);
             try {
-                img.transferTo(file);
+                img.transferTo(file); // MultipartFile의 내용을 특정 경로에 저장하기 위함
                 return Optional.ofNullable(fileName);
             } catch (IOException e) {
-                log.error("[File Object Error] = {}",e.getMessage());
+                log.error("[File Object Error] = {}", e.getMessage());
             }
         }
         return Optional.empty();

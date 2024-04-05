@@ -1,5 +1,7 @@
 package com.example.Project1.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public interface DetailImgService {
-    void regAll(String paths, Long productId);
+    void regAll(MultipartFile[] subImgs, Long productId);
 }

@@ -6,51 +6,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <!--자바 스크립트 등록시 이미지 삽입-->
+    <link rel="stylesheet" href="/css/admin/products/reg.css">
     <script src="/js/admin/products/reg.js"></script>
-    <style>
-        .img-box img {
-            height: 300px;
-        }
-    </style>
-    <!--자바 스크립트 등록시 이미지 삽입-->
+
 </head>
 <body>
-<main layout:fragment="main" class="flex flex-col w-full n-panel n-main-panel">
-    <!--등록 양식-->
-    <form method="post" th:action="@{/admin/products}" class="n-form n-form-type:outline-box px:10"
-          enctype="multipart/form-data" th:object="${product}">
+<main layout:fragment="main" class="n-panel n-main-panel">
+    <form method="post" action="/admin/products" class="n-form n-form-type:outline-box px:10 w:100p"
+          enctype="multipart/form-data">
         <div>
             <label>
                 <span>상품 이름</span>
-                <input type="text" th:field="*{name}"/>
-                <span class="error" th:if="${#fields.hasErrors('name')}"
-                      th:errors="*{name}">Name Error</span>
+                <input type="text" name="name" required/>
             </label>
         </div>
         <div>
             <label>
                 <span>판매가</span>
-                <input type="text" name="sellingPrice"/>
+                <input type="text" name="sellingPrice" required/>
             </label>
         </div>
         <div>
             <label>
                 <span>공급가</span>
-                <input type="text" name="supplyingPrice"/>
+                <input type="text" name="supplyingPrice" required/>
             </label>
         </div>
         <div>
             <label>
                 <span>상품 설명</span>
-                <textarea name="description" class="height:7"></textarea>
+                <textarea name="description" required class="height:7"></textarea>
             </label>
         </div>
+
         <div>
-            <label class="img-label">
+            <label class="main-img-label">
                 <span>대표 사진</span>
-                <input class="img-input d:none border" type="file" name="img"/>
-                <span class="img-box d:flex flex-direction:row">
+                <input class="main-img-input d:none border" type="file" name="img"/>
+                <span class="main-img-box d:flex flex-direction:row">
                     <span class="d:flex jc:center al-items:center w:5 h:5 bg-color:base-3">
                         <span class="icon icon:camera icon-size:5  icon-color:base-1"></span>
                     </span>
@@ -58,21 +51,29 @@
             </label>
         </div>
 
-        <div>
-            <label>
+
+        <div class="mb:10">
+            <label class="sub-img-label">
                 <span>디테일 사진</span>
-                <input type="file" name="paths" multiple/>
+                <span class="sub-img-box d:flex flex-direction:row">
+                    <span class="d:flex jc:center al-items:center w:5 h:5 bg-color:base-3">
+                        <span class="icon icon:camera icon-size:5  icon-color:base-1"></span>
+                    </span>
+                </span>
+                <input type="file" name="sub-img" class="d:none sub-img-input" multiple/>
             </label>
         </div>
-        <label for="lang">카테고리</label>
-        <select id="lang" name="categoryId" class="n-dropdown">
-            <option th:each="category : ${categories}"
-                    th:value="${category.id}"
-                    value="javascript"
-                    class="n-dropdown-item"
-                    th:text="${category.name}">JavaScript
-            </option>
-        </select>
+
+        <label>카테고리
+            <select name="categoryId" class="n-dropdown">
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        value="javascript"
+                        class="n-dropdown-item"
+                        th:text="${category.name}">JavaScript
+                </option>
+            </select>
+        </label>
 
         <div class="d:flex flex-direction:row justify-content:end">
             <button class="n-btn n-btn-size:3">
@@ -83,7 +84,6 @@
             </div>
         </div>
     </form>
-    <!--등록 양식-->
 </main>
 </body>
 </html>

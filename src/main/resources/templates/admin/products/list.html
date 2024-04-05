@@ -27,7 +27,7 @@
     <!--검색-->
 
     <!--item 삭제-->
-    <form action="products/delete" method="post" class="flex flex-col w-full" >
+    <form action="products/delete" method="post" class="flex flex-col w-full">
         <table class="n-table n-table-style:striped">
             <thead>
             <tr>
@@ -44,7 +44,8 @@
             <tr th:each="product: ${list}">
                 <td>
                     <label>
-                        <input name="ids" type="checkbox" class="n-toggle n-toggle-type:check-box n-toggle-size:2" th:value="${product.id}">
+                        <input name="ids" type="checkbox" class="n-toggle n-toggle-type:check-box n-toggle-size:2"
+                               th:value="${product.id}">
                     </label>
                 </td>
                 <td scope="col" th:text="${product.name}">상품 이름</td>
@@ -53,7 +54,7 @@
                 <td scope="col">
                     <!--클릭 상세 페이지-->
                     <a href="" th:href="@{/admin/products/{id}(id=${product.id})}">
-                        <img id="imgId" th:src="@{'/image/products/'+${product.img}}" alt="첨부이미지" class="w:1"/>
+                        <img id="imgId" th:src="@{'/image/products/main/'+${product.img}}" alt="첨부이미지" class="w:1"/>
                     </a>
                     <!--클릭 상세 페이지-->
                 </td>
