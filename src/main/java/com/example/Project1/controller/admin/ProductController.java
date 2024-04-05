@@ -37,6 +37,11 @@ public class ProductController {
                        @RequestParam(defaultValue = "") String keyword,
                        Model model) {
         List<ProductView> list = service.getList(type, keyword.trim());
+
+        for (ProductView productView : list) {
+            log.warn("ProductView = {}",productView);
+        }
+
         model.addAttribute("list", list);
         return PRODUCTS_VIEW + "/list";
     }
@@ -50,8 +55,10 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
-        ProductView product = service.getById(id);
-        model.addAttribute("product", product);
+        ProductView productView = service.getById(id);
+        log.warn("ProductView ID = {}",productView.getId());
+        log.warn("ProductView IMG  = {}",productView.getImg());
+        model.addAttribute("product", productView);
         return PRODUCTS_VIEW + "/detail";
     }
 

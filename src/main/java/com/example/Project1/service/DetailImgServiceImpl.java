@@ -16,13 +16,19 @@ public class DetailImgServiceImpl implements DetailImgService{
     @Override
     public void regAll(MultipartFile[] subImgs, Long productId) {
         List<DetailImg> detailImgList = new ArrayList<>();
-        for (MultipartFile subImg : subImgs) {
-            DetailImg detailImageFile = DetailImg.builder()
-                    .productId(productId)
-                    .path(subImg.getOriginalFilename())
-                    .build();
-            detailImgList.add(detailImageFile);
+        if (!isEmpty(subImgs)) {
+            for (MultipartFile subImg : subImgs) {
+                DetailImg detailImageFile = DetailImg.builder()
+                        .productId(productId)
+                        .path(subImg.getOriginalFilename())
+                        .build();
+                detailImgList.add(detailImageFile);
+            }
+            repository.reg(detailImgList);
         }
-        repository.reg(detailImgList);
+    }
+
+    private boolean isEmpty(MultipartFile[] subImgs) {
+        return subImgs[0].isEmpty();
     }
 }

@@ -68,6 +68,11 @@ function handleFileLoad(e, imgPreview) {
     let img = document.createElement("img");
     img.src = e.target.result;
 
+    // img.onload = () => {
+    //   img.classList.add("fade-in");
+    //   img.classList.add("slide-in");
+    // };
+
     setTimeout(() => {
         img.classList.add("fade-in");
         img.classList.add("slide-in");
