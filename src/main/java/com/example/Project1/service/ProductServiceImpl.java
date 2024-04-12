@@ -45,8 +45,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void edit(ProductDto updateProduct) {
         Product findEntity = repository.findById(updateProduct.getId());
-        ProductDto updatedProductDto = updateProduct.update(findEntity);
-        Product updatedEntity = updatedProductDto.toEntity();
+        log.info("findEntity: {}", findEntity);
+        Product updatedEntity = findEntity.updateFromRequest(updateProduct);
+        log.info("updateProduct: {}", findEntity);
         repository.updateProductById(updatedEntity);
     }
 

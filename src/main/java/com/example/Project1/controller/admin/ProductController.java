@@ -42,8 +42,6 @@ public class ProductController {
         int count = service.getCount(request.getType(), request.getKeyword());
         model.addAttribute("list", list);
         model.addAttribute("count", count);
-        log.info("count = {}" , count);
-        log.info("list = {}", list);
         return PRODUCTS_VIEW + "/list";
     }
 

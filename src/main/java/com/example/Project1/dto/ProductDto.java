@@ -23,6 +23,7 @@ public class ProductDto {
 
     public Product toEntity() {
         return Product.builder()
+                .id(id)
                 .name(this.name)
                 .supplyingPrice(this.supplyingPrice)
                 .sellingPrice(this.sellingPrice)
@@ -33,6 +34,7 @@ public class ProductDto {
 
     public ProductDto update(Product product) {
         return ProductDto.builder()
+                .id(product.getId())
                 .name(product.getName())
                 .supplyingPrice(product.getSupplyingPrice())
                 .sellingPrice(product.getSellingPrice())
