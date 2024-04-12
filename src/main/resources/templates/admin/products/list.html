@@ -41,19 +41,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="product: ${list}">
-                <td>
-                    <label>
-                        <input name="ids" type="checkbox" class="n-toggle n-toggle-type:check-box n-toggle-size:2"
-                               th:value="${product.id}">
-                    </label>
-                </td>
+            <!--멀티 체크 박스 일괄처리-->
+                <tr th:each="product: ${list}">
+                    <td>
+                        <input type="checkbox" class="n-toggle n-toggle-type:check-box n-toggle-size:2"
+                               name="ids" th:id="${'prodcut-'+ product.id}" th:value="${product.id}">
+                        <label th:for="${'product-' + product.id}"></label>
+                    </td>
                 <td scope="col" th:text="${product.name}">상품 이름</td>
                 <td scope="col" th:text="${product.sellingPrice}">판매가</td>
                 <td scope="col" th:text="${product.supplyingPrice}">공급가</td>
                 <td scope="col">
                     <!--클릭 상세 페이지-->
-                    <a href="" th:href="@{/admin/products/{id}(id=${product.id})}">
+                    <a th:href="@{/admin/products/{id}(id=${product.id})}">
                         <img id="imgId" th:src="@{'/image/products/main/'+${product.img}}" alt="첨부이미지" class="w:1"/>
                     </a>
                     <!--클릭 상세 페이지-->
@@ -61,6 +61,7 @@
                 <td scope="col" th:text="${product.description}">설명</td>
                 <td scope="col" th:text="${#dates.format(product.regDate, 'yyyy년 M월 d일') }">등록일자</td>
             </tr>
+            <!--멀티 체크 박스 일괄처리-->
             </tbody>
         </table>
         <div class="d:flex jc:end mt:3">
@@ -86,35 +87,35 @@
             , floatnum=(${page}-1)/5,
             intnum=${T(java.lang.Math).floor(floatnum)},
             startnum=${intnum}*5+1,
-            lastnum = ${count} mod 10 > 0 ? ${count / 10} + 1 : ${count / 10} + 0">
+           lastnum = ${count} != null ? (${count} mod 5 > 0 ? ${count / 5} + 1 : ${count / 5} + 0) : 0">
 
             <li>
-                <a th:if="${page} ge 6 and ${param.searchKeyword} != null"
+                <a th:if="${page} ge 6 and ${param.} != null"
                    href="products?p=1"
-                   th:href="@{./products(page=${startnum}-1,searchMethod=${param.searchMethod},searchKeyword=${param.searchKeyword})}">이전</a>
-                <a th:if="${page} ge 6 and ${param.searchKeyword} == null"
+                   th:href="@{./products(page=${startnum}-1,type=${param.type},keyword=${param.keyword})}">이전</a>
+                <a th:if="${page} ge 6 and ${param.keyword} == null"
                    href="products?p=1"
                    th:href="@{./products(page=${startnum}-1)}">이전</a>
             </li>
 
             <li th:each="n : ${#numbers.sequence(startnum,startnum+4)}"
                 th:class="${{page}} eq ${n}? 'active'">
-                <a th:if="${n le lastnum and param.searchKeyword != null}"
+                <a th:if="${n le lastnum and param.keyword != null}"
                    href="products?p=1"
-                   th:href="@{./products(page=${n},searchMethod=${param.searchMethod},searchKeyword=${param.searchKeyword})}"
+                   th:href="@{./products(page=${n},type=${param.type},keyword=${param.keyword})}"
                    th:text="${n}"
                 >1</a>
-                <a th:if="${n le lastnum and param.searchKeyword == null}"
+                <a th:if="${n le lastnum and param.keyword == null}"
                    href="products?p=1"
                    th:href="@{./products(page=${n})}"
                    th:text="${n}"
                 >1</a>
             </li>
             <li>
-                <a th:if="${startnum+5 le lastnum and param.searchKeyword != null}"
+                <a th:if="${startnum+5 le lastnum and param.keyword != null}"
                    href="products?p=12"
-                   th:href="@{./products(page=${startnum}+5,searchMethod=${param.searchMethod},searchKeyword=${param.searchKeyword})}">다음</a>
-                <a th:if="${startnum+5 le lastnum and param.searchKeyword == null}"
+                   th:href="@{./products(page=${startnum}+5,type=${param.type},keyword=${param.keyword})}">다음</a>
+                <a th:if="${startnum+5 le lastnum and param.keyword == null}"
                    href="products?p=12"
                    th:href="@{./products(page=${startnum}+5)}">다음</a>
             </li>

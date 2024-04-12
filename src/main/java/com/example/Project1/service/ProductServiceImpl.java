@@ -1,6 +1,7 @@
 package com.example.Project1.service;
 
-import com.example.Project1.controller.admin.dto.ProductSearchRequest;
+import com.example.Project1.dto.ProductDto;
+import com.example.Project1.dto.ProductSearchRequest;
 import com.example.Project1.entity.Product;
 import com.example.Project1.entity.ProductView;
 import com.example.Project1.repository.ProductRepository;
@@ -27,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductView> getList(ProductSearchRequest request) {
-        int size = 10;
+        int size = 5;
         int offset = (request.getPage() - 1) * size;
         return repository.findAll(offset,size,request.getType(), request.getKeyword());
     }
@@ -42,8 +43,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void edit(Product product) {
-        repository.updateProductById(product);
+    public void edit(ProductDto updateProduct) {
+        Product findEntity = repository.findById(updateProduct.getId());
+        ProductDto updatedProductDto = updateProduct.update(findEntity);
+        Product updatedEntity = updatedProductDto.toEntity();
+        repository.updateProductById(updatedEntity);
     }
 
     @Override

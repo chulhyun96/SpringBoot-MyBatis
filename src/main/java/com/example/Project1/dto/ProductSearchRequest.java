@@ -1,4 +1,4 @@
-package com.example.Project1.controller.admin.dto;
+package com.example.Project1.dto;
 
 import lombok.Getter;
 import lombok.Setter;

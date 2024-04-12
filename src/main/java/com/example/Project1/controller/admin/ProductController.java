@@ -1,6 +1,7 @@
 package com.example.Project1.controller.admin;
 
-import com.example.Project1.controller.admin.dto.ProductSearchRequest;
+import com.example.Project1.dto.ProductDto;
+import com.example.Project1.dto.ProductSearchRequest;
 import com.example.Project1.entity.Category;
 import com.example.Project1.entity.Product;
 import com.example.Project1.entity.ProductView;
@@ -39,41 +40,42 @@ public class ProductController {
                        Model model) {
         List<ProductView> list = service.getList(request);
         int count = service.getCount(request.getType(), request.getKeyword());
-        log.info("request.getKeyword = {}", request.getKeyword());
         model.addAttribute("list", list);
         model.addAttribute("count", count);
+        log.info("count = {}" , count);
+        log.info("list = {}", list);
         return PRODUCTS_VIEW + "/list";
     }
 
-    @PutMapping("/{id}")
-    @ResponseBody
-    public String edit(@RequestBody Product product) {
-        service.edit(product);
-        return "success";
+    @PostMapping("/{id}/edit")
+    public String edit(ProductDto updateProduct) {
+        log.info("Product edit {}", updateProduct);
+        service.edit(updateProduct);
+        return REDIRECT + PRODUCTS_VIEW;
     }
 
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
-        Product productView = service.getById(id);
-        model.addAttribute("product", productView);
+        Product selectedProduct = service.getById(id);
+        model.addAttribute("product", selectedProduct);
         return PRODUCTS_VIEW + "/detail";
     }
 
     @PostMapping
     public String reg(Product product,
-                      MultipartFile img,
+                      MultipartFile imgPath,
                       @RequestParam("sub-img") MultipartFile[] subImgs,
                       HttpServletRequest req,
                       Long categoryId) throws FileUploadException {
 
         String mainImgPath = "/image/products/main";
-        Optional<String> productImg = saveImgToDir(img, req, mainImgPath);
+        Optional<String> productImg = saveImgToDir(imgPath, req, mainImgPath);
 
         String subImgPath = "/image/products/sub";
         saveImgsToDir(subImgs, req, subImgPath);
 
         product.setCategoryId(categoryId);
-        product.setImgPath(productImg.orElseThrow(() -> new FileUploadException("뭔가 이상함")));
+        product.setImg(productImg.orElseThrow(() -> new FileUploadException("Faild")));
 
         service.reg(product);
         detailImgService.regAll(subImgs, product.getId());

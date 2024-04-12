@@ -12,28 +12,28 @@
 <main layout:fragment="main" class="n-panel n-main-panel ">
     <section class="d:flex fl-grow:1 ai:center mb:8 border-bottom">
         <div>
-            <img id="imgId" th:src="${product.img}" alt="첨부이미지" class="w:7 mt:10 ml:10 p:5 border"/>
-            <input class="m:10" type="file" name="paths" multiple/>
+            <img id="imgId" th:src="@{'/image/products/main/'+${product.img}}" alt="첨부이미지" class="w:7 mt:10 ml:10 p:5 border"/>
+            <input class="m:10" type="file" name="paths"/>
         </div>
-        <form id="frm" class="d:flex  flex-direction:column w:100p mr:10 border-left pl:10">
-            <input type="hidden" name="id" class="id" th:value="${product.id}">
+        <form method="post" th:action="@{/admin/products/{id}/edit(id=${product.id})}"  th:object="${product}" class="d:flex  flex-direction:column w:100p mr:10 border-left pl:10">
+            <input type="hidden" th:field="*{id}">
             <label>상품이름</label>
-            <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6 name" name="name"
-                   th:value="${product.name}">
+            <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6"
+                   th:field="*{name}">
             <label>판매가</label>
-            <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6 sellingPrice" name="sellingPrice"
-                   th:value="${product.sellingPrice}">
+            <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6"
+                   th:field="*{sellingPrice}">
             <label>공급가</label>
-            <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6 supplyingPrice" name="supplyingPrice"
-                   th:value="${product.supplyingPrice}">
+            <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6"
+                   th:field="*{supplyingPrice}">
             <label>설명</label>
-            <textarea class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6 description" rows="7" name="description"
-                      th:text="${product.description}"></textarea>
+            <textarea class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6 description" rows="7"
+                      th:field="*{description}"></textarea>
             <label>등록일자</label>
-            <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6 " th:value="${product.regDate}">
+            <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6" th:field="*{regDate}">
 
 
-            <button type="button" class="n-btn mt:4" onclick="edit()">수정</button>
+            <button type="submit" class="n-btn mt:4">수정</button>
             <a type="button" class="n-btn n-btn-color:sub mt:1" th:href="@{/admin/products}">목록</a>
         </form>
     </section>

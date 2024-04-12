@@ -1,6 +1,7 @@
 package com.example.Project1.service;
 
-import com.example.Project1.controller.admin.dto.ProductSearchRequest;
+import com.example.Project1.dto.ProductDto;
+import com.example.Project1.dto.ProductSearchRequest;
 import com.example.Project1.entity.Product;
 import com.example.Project1.entity.ProductView;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +21,7 @@ public interface ProductService {
 
     void reg(Product product);
 
-    void edit(Product product);
+    void edit(ProductDto product);
 
     void deleteAllById(List<Long> deleteId);
 }
