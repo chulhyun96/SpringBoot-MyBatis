@@ -1,5 +1,6 @@
 package com.example.Project1.service;
 
+import com.example.Project1.controller.admin.dto.ProductSearchRequest;
 import com.example.Project1.entity.Product;
 import com.example.Project1.entity.ProductView;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,11 +10,17 @@ import java.util.Optional;
 
 
 public interface ProductService {
-    List<ProductView> getList();
-    List<ProductView> getList(String type, String keyword);
-    ProductView getById(Long id);
-    void reg(Product product);
-    void edit(Product product);
-    void deleteAllById(List<Long> deleteId);
+    int getCount(String type, String keyword);
+
+    List<ProductView> getList(ProductSearchRequest request);
+
     Optional<String> saveImg(MultipartFile img, String realPath);
+
+    Product getById(Long id);
+
+    void reg(Product product);
+
+    void edit(Product product);
+
+    void deleteAllById(List<Long> deleteId);
 }

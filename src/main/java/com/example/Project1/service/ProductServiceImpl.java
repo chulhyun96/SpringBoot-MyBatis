@@ -1,5 +1,6 @@
 package com.example.Project1.service;
 
+import com.example.Project1.controller.admin.dto.ProductSearchRequest;
 import com.example.Project1.entity.Product;
 import com.example.Project1.entity.ProductView;
 import com.example.Project1.repository.ProductRepository;
@@ -20,17 +21,18 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
 
     @Override
-    public List<ProductView> getList() {
-        return repository.findAll(null, null);
+    public int getCount(String type, String keyword) {
+        return repository.count(type, keyword);
     }
 
     @Override
-    public List<ProductView> getList(String type, String keyword) {
-        return repository.findAll(type, keyword);
+    public List<ProductView> getList(ProductSearchRequest request) {
+        int size = 10;
+        int offset = (request.getPage() - 1) * size;
+        return repository.findAll(offset,size,request.getType(), request.getKeyword());
     }
-
     @Override
-    public ProductView getById(Long id) {
+    public Product getById(Long id) {
         return repository.findById(id);
     }
 

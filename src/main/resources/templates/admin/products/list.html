@@ -69,12 +69,58 @@
                 <a href="/admin/products/reg" class="n-btn n-btn-size:3"> 등록 </a>
             </div>
             <!--등록 하러가기-->
+
+            <!--item 삭제-->
             <button class="n-btn n-btn-size:3 n-btn-color:accent mr:3">
                 삭제
             </button>
+            <!--item 삭제-->
         </div>
     </form>
-    <!--item 삭제-->
+    <!-- 페이징 -->
+    <section class="mb:5">
+        <h1 class="d:none">페이저</h1>
+        <ul class="n-pager"
+            style="display: flex; justify-content: center;"
+            th:with="page = (${param.page} == null)? 1 : ${{param.page}}
+            , floatnum=(${page}-1)/5,
+            intnum=${T(java.lang.Math).floor(floatnum)},
+            startnum=${intnum}*5+1,
+            lastnum = ${count} mod 10 > 0 ? ${count / 10} + 1 : ${count / 10} + 0">
+
+            <li>
+                <a th:if="${page} ge 6 and ${param.searchKeyword} != null"
+                   href="products?p=1"
+                   th:href="@{./products(page=${startnum}-1,searchMethod=${param.searchMethod},searchKeyword=${param.searchKeyword})}">이전</a>
+                <a th:if="${page} ge 6 and ${param.searchKeyword} == null"
+                   href="products?p=1"
+                   th:href="@{./products(page=${startnum}-1)}">이전</a>
+            </li>
+
+            <li th:each="n : ${#numbers.sequence(startnum,startnum+4)}"
+                th:class="${{page}} eq ${n}? 'active'">
+                <a th:if="${n le lastnum and param.searchKeyword != null}"
+                   href="products?p=1"
+                   th:href="@{./products(page=${n},searchMethod=${param.searchMethod},searchKeyword=${param.searchKeyword})}"
+                   th:text="${n}"
+                >1</a>
+                <a th:if="${n le lastnum and param.searchKeyword == null}"
+                   href="products?p=1"
+                   th:href="@{./products(page=${n})}"
+                   th:text="${n}"
+                >1</a>
+            </li>
+            <li>
+                <a th:if="${startnum+5 le lastnum and param.searchKeyword != null}"
+                   href="products?p=12"
+                   th:href="@{./products(page=${startnum}+5,searchMethod=${param.searchMethod},searchKeyword=${param.searchKeyword})}">다음</a>
+                <a th:if="${startnum+5 le lastnum and param.searchKeyword == null}"
+                   href="products?p=12"
+                   th:href="@{./products(page=${startnum}+5)}">다음</a>
+            </li>
+        </ul>
+    </section>
+    <!-- 페이징 -->
 </main>
 </body>
 </html>

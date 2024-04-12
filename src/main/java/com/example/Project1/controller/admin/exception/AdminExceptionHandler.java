@@ -3,6 +3,7 @@ package com.example.Project1.controller.admin.exception;
 import com.example.Project1.controller.admin.ProductController;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -14,6 +15,14 @@ public class AdminExceptionHandler {
     @ExceptionHandler(FileUploadException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView handleFileUploadException(FileUploadException ex) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName(ERROR_PATH + "4xx");
+        modelAndView.addObject("message",ex.getMessage());
+        return modelAndView;
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(ERROR_PATH + "4xx");
         modelAndView.addObject("message",ex.getMessage());

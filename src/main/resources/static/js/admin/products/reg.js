@@ -151,6 +151,7 @@ function updateMultiInputAndRender(imgInput, filesFromDrag, imgPreview) {
     renderThumbnails(imgPreview, filteredFiles, append);
 }
 
+//야 나 유학파야 캠퍼스 collaboration
 function resetValidState(imgLabel) {
     imgLabel.classList.remove("valid");
     imgLabel.classList.remove("invalid");

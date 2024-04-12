@@ -1,5 +1,6 @@
 package com.example.Project1.controller.admin;
 
+import com.example.Project1.controller.admin.dto.ProductSearchRequest;
 import com.example.Project1.entity.Category;
 import com.example.Project1.entity.Product;
 import com.example.Project1.entity.ProductView;
@@ -7,6 +8,7 @@ import com.example.Project1.service.CategoryService;
 import com.example.Project1.service.DetailImgService;
 import com.example.Project1.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -33,16 +35,13 @@ public class ProductController {
     private final DetailImgService detailImgService;
 
     @GetMapping
-    public String list(@RequestParam(required = false) String type,
-                       @RequestParam(defaultValue = "") String keyword,
+    public String list(@Valid @ModelAttribute ProductSearchRequest request,
                        Model model) {
-        List<ProductView> list = service.getList(type, keyword.trim());
-
-        for (ProductView productView : list) {
-            log.warn("ProductView = {}",productView);
-        }
-
+        List<ProductView> list = service.getList(request);
+        int count = service.getCount(request.getType(), request.getKeyword());
+        log.info("request.getKeyword = {}", request.getKeyword());
         model.addAttribute("list", list);
+        model.addAttribute("count", count);
         return PRODUCTS_VIEW + "/list";
     }
 
@@ -55,9 +54,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
-        ProductView productView = service.getById(id);
-        log.warn("ProductView ID = {}",productView.getId());
-        log.warn("ProductView IMG  = {}",productView.getImg());
+        Product productView = service.getById(id);
         model.addAttribute("product", productView);
         return PRODUCTS_VIEW + "/detail";
     }
@@ -76,7 +73,7 @@ public class ProductController {
         saveImgsToDir(subImgs, req, subImgPath);
 
         product.setCategoryId(categoryId);
-        product.setImgPath(productImg.orElseThrow(() -> new FileUploadException("File upload failed")));
+        product.setImgPath(productImg.orElseThrow(() -> new FileUploadException("뭔가 이상함")));
 
         service.reg(product);
         detailImgService.regAll(subImgs, product.getId());

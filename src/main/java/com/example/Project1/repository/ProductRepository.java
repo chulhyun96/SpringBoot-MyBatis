@@ -8,9 +8,10 @@ import java.util.List;
 
 @Mapper
 public interface ProductRepository {
-    List<ProductView> findAll(String type,String keyword);
-    ProductView findById(Long id);
+    List<ProductView> findAll(int offset, int size, String type, String keyword);
+    Product findById(Long id);
     void reg(Product product);
     void updateProductById(Product product);
     void deleteAll(List<Long> deleteId);
+    int count(String type, String keyword);
 }
