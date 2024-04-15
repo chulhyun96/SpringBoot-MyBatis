@@ -2,8 +2,24 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.Project1.repository.ProductRepository">
-    <select id="findAll" resultType="ProductView">
+<mapper namespace="com.example.Project1.domain.repository.ProductRepository">
+
+    <insert id="saveProduct" useGeneratedKeys="true" keyProperty="id">
+        insert into product(name, selling_price, supplying_price, description ,img, category_id)
+        values (#{name}, #{sellingPrice}, #{supplyingPrice}, #{description}, #{img}, #{categoryId});
+    </insert>
+
+    <insert id="saveSubImg" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO detail_img (path, product_id)
+        VALUES
+        <foreach collection="list" item="detailImg" separator=",">
+            (#{detailImg.path}, #{detailImg.productId})
+        </foreach>
+    </insert>
+
+
+
+    <!--<select id="findAll" resultType="list">
         SELECT
         *
         FROM product
@@ -41,13 +57,8 @@
         FROM product
         where id = #{id}
     </select>
-
-    <insert id="reg" useGeneratedKeys="true" keyProperty="id">
-        insert into product(name,selling_price, supplying_price, description ,img,category_id)
-        values (#{name}, #{sellingPrice}, #{supplyingPrice}, #{description}, #{img},#{categoryId})
-    </insert>
-
-    <update id="updateProductById">
+-->
+    <!--<update id="updateProductById">
         UPDATE product
         SET name = #{name},selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice}, description =
         #{description}, img = #{img} where id = #{id}
@@ -59,6 +70,6 @@
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
         </foreach>
-    </delete>
+    </delete>-->
 
 </mapper>

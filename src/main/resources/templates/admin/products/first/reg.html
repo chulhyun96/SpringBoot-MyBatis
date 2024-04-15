@@ -12,37 +12,37 @@
 </head>
 <body>
 <main layout:fragment="main" class="n-panel n-main-panel">
-    <form method="post" th:action="@{/admin/products/new}" class="n-form n-form-type:outline-box px:10 w:100p"
-          th:object="${product}" enctype="multipart/form-data">
+    <form method="post" action="/admin/products" class="n-form n-form-type:outline-box px:10 w:100p"
+          enctype="multipart/form-data">
         <div>
             <label>
                 <span>상품 이름</span>
-                <input type="text" th:field="*{name}" required/>
+                <input type="text" name="name" required/>
             </label>
         </div>
         <div>
             <label>
                 <span>판매가</span>
-                <input type="text"  th:field="*{sellingPrice}" required/>
+                <input type="text" name="sellingPrice" required/>
             </label>
         </div>
         <div>
             <label>
                 <span>공급가</span>
-                <input type="text" th:field="*{supplyingPrice}" required/>
+                <input type="text" name="supplyingPrice" required/>
             </label>
         </div>
         <div>
             <label>
                 <span>상품 설명</span>
-                <textarea th:field="*{description}" required class="height:7"></textarea>
+                <textarea name="description" required class="height:7"></textarea>
             </label>
         </div>
 
         <div>
             <label class="main-img-label">
                 <span>대표 사진</span>
-                <input class="main-img-input d:none border" type="file" th:field="*{image}"/>
+                <input class="main-img-input d:none border" type="file" name="imgPath"/>
                 <span class="main-img-box d:flex flex-direction:row">
                     <span class="d:flex jc:center al-items:center w:5 h:5 bg-color:base-3">
                         <span class="icon icon:camera icon-size:5  icon-color:base-1"></span>
@@ -55,18 +55,20 @@
         <div class="mb:10">
             <label class="sub-img-label">
                 <span>디테일 사진</span>
-                <input type="file" class="d:none sub-img-input" th:field="*{images}" multiple/>
                 <span class="sub-img-box d:flex flex-direction:row">
                     <span class="d:flex jc:center al-items:center w:5 h:5 bg-color:base-3">
                         <span class="icon icon:camera icon-size:5  icon-color:base-1"></span>
                     </span>
                 </span>
+                <input type="file" name="sub-img" class="d:none sub-img-input" multiple/>
             </label>
         </div>
 
         <label>카테고리
-            <select th:field="*{categoryId}" class="n-dropdown">
+            <select name="categoryId" class="n-dropdown">
                 <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        value="javascript"
                         class="n-dropdown-item"
                         th:text="${category.name}">JavaScript
                 </option>
