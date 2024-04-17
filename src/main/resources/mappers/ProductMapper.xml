@@ -27,10 +27,10 @@
 
 
     <update id="updateSubImgs">
-        <foreach collection="list" item="detailImg" open="" close="" separator=";">
+        <foreach collection="list" item="detailImg" separator=";">
             UPDATE detail_img
             SET path = #{detailImg.path}
-            WHERE product_id = #{detailImg.productId}
+            WHERE product_id = #{detailImg.productId} and id = #{detailImg.id}
         </foreach>
     </update>
 
@@ -61,7 +61,7 @@
         order by id desc
     </select>
 
-    <select id="findImgs">
+    <select id="findImgs" resultType="DetailImg">
         select
         *
         from detail_img

@@ -48,22 +48,25 @@ public class ProductService {
         Product foundProduct = repository.findById(updateRequest.getId());
         UploadImg updateImg = imgStore.storeMainImg(updateRequest.getImage());
 
-        Product updatedProduct = foundProduct.update(updateRequest,updateImg);
+        Product updatedProduct = foundProduct.update(updateRequest, updateImg);
         repository.updateProduct(updatedProduct);
 
-        List<DetailImg> uploadImgs = imgStore.storeSubImgs(updateRequest.getImages()).stream()
+        List<DetailImg> imgs = repository.findImgs(updateRequest.getId());
+        List<UploadImg> uploadImgs = imgStore.storeSubImgs(updateRequest.getImages());
+        List<DetailImg> detailImgs = imgs.stream()
                 .map(img -> DetailImg.builder()
-                        .productId(updatedProduct.getId())
-                        .path(img.getStorageName())
+                        .id(img.getId())
+                        .path(uploadImgs.get(imgs.indexOf(img)).getStorageName())
+                        .productId(updateRequest.getId())
                         .build())
-                        .collect(Collectors.toList());
-        repository.updateSubImgs(uploadImgs);
-
+                .collect(Collectors.toList());
+        repository.updateSubImgs(detailImgs);
     }
 
     public List<ProductListView> getList() {
         return repository.findAll();
     }
+
     public List<Category> getCategories() {
         return repository.findCategories();
     }
