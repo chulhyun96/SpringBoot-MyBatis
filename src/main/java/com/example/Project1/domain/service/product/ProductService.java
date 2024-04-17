@@ -2,7 +2,7 @@ package com.example.Project1.domain.service.product;
 
 import com.example.Project1.domain.dto.request.img.UploadImg;
 import com.example.Project1.domain.dto.request.product.ProductListView;
-import com.example.Project1.domain.dto.request.product.ProductRegRequest;
+import com.example.Project1.domain.dto.request.product.ProductRequest;
 import com.example.Project1.domain.entity.Category;
 import com.example.Project1.domain.entity.DeliveryType;
 import com.example.Project1.domain.entity.DetailImg;
@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -26,27 +26,39 @@ public class ProductService {
     private final ImgStore imgStore;
 
     @Transactional
-    public void reg(ProductRegRequest productRegRequest) throws IOException {
+    public void reg(ProductRequest regRequest) throws IOException {
         //Product
-        UploadImg uploadImg = imgStore.storeMainImg(productRegRequest.getImage());
-        Product newProduct = Product.toEntity(productRegRequest, uploadImg);
+        UploadImg uploadImg = imgStore.storeMainImg(regRequest.getImage());
+        Product newProduct = Product.toEntity(regRequest, uploadImg);
         repository.saveProduct(newProduct);
 
         //DetailImg
-        List<UploadImg> uploadImgs = imgStore.storeSubImgs(productRegRequest.getImages());
-        List<DetailImg> detailImgList = new ArrayList<>();
-        for (UploadImg img : uploadImgs) {
-            detailImgList.add(DetailImg.builder().
-                    path(img.getStorageName()).
-                    productId(newProduct.getId()).
-                    build());
-        }
+        List<DetailImg> detailImgList = imgStore.storeSubImgs(regRequest.getImages()).stream()
+                .map(img -> DetailImg.builder()
+                        .path(img.getStorageName())
+                        .productId(newProduct.getId())
+                        .build())
+                .collect(Collectors.toList());
         repository.saveSubImg(detailImgList);
     }
 
-    public void update(ProductRegRequest productRegRequest) {
-        Product foundProduct = repository.findById(productRegRequest.getId());
-        log.info("foundProduct = {}", foundProduct);
+    @Transactional
+    public void update(ProductRequest updateRequest) throws IOException {
+        Product foundProduct = repository.findById(updateRequest.getId());
+
+        UploadImg updateImg = imgStore.storeMainImg(updateRequest.getImage());
+        Product updatedProduct = foundProduct.update(updateRequest,updateImg);
+        repository.updateProduct(updatedProduct);
+
+        List<DetailImg> foundImgs = repository.findImgs(updateRequest.getId());
+        log.info("found imgs : {}", foundImgs);
+        List<DetailImg> uploadImgs = imgStore.storeSubImgs(updateRequest.getImages()).stream()
+                .map(img -> DetailImg.builder()
+                        .path(img.getStorageName())
+                        .productId(updatedProduct.getId())
+                        .build())
+                        .collect(Collectors.toList());
+        repository.updateSubImgs(uploadImgs);
     }
 
     public List<ProductListView> getList() {
@@ -58,5 +70,9 @@ public class ProductService {
 
     public List<DeliveryType> getDeliveryTypes() {
         return repository.findDeliveryTypes();
+    }
+
+    public ProductRequest getProductById(Long id) {
+        Product foundProduct = repository.findById(id);
     }
 }

@@ -19,17 +19,16 @@
                 <th scope="col">판매가</th>
                 <th scope="col">공급가</th>
                 <th scope="col">이미지</th>
-                <th scope="col">설명</th>
                 <th scope="col">등록일자</th>
             </tr>
             </thead>
-            <tbody>
             <!--멀티 체크 박스 일괄처리-->
+            <tbody>
             <tr th:each="product: ${products}">
                 <td>
                     <input type="checkbox" class="n-toggle n-toggle-type:check-box n-toggle-size:2"
-                           name="ids" th:id="${'prodcut-'+ product.id}" th:value="${product.id}">
-                    <label th:for="${'product-' + product.id}"></label>
+                           name="ids" th:id="${product.id}" th:value="${product.id}">
+                    <label th:for="${product.id}"></label>
                 </td>
                 <td scope="col" th:text="${product.name}">상품 이름</td>
                 <td scope="col" th:text="${product.sellingPrice}">판매가</td>
@@ -44,8 +43,8 @@
                 <td scope="col" th:text="${#dates.format(product.regDate, 'yyyy-MM-dd') }">등록일자</td>
 
             </tr>
-            <!--멀티 체크 박스 일괄처리-->
             </tbody>
+            <!--멀티 체크 박스 일괄처리-->
         </table>
         <div class="d:flex jc:end mt:3">
             <!--등록 하러가기-->

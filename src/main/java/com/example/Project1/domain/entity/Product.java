@@ -1,7 +1,7 @@
 package com.example.Project1.domain.entity;
 
 import com.example.Project1.domain.dto.request.img.UploadImg;
-import com.example.Project1.domain.dto.request.product.ProductRegRequest;
+import com.example.Project1.domain.dto.request.product.ProductRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +24,7 @@ public class Product {
     private Long categoryId;
     private Long deliveryType;
 
-    public static Product toEntity(ProductRegRequest request, UploadImg uploadImg) {
+    public static Product toEntity(ProductRequest request, UploadImg uploadImg) {
         return Product.builder()
                 .name(request.getName())
                 .sellingPrice(request.getSellingPrice())
@@ -33,6 +33,18 @@ public class Product {
                 .img(uploadImg.getStorageName())
                 .categoryId(request.getCategoryId())
                 .deliveryType(request.getDeliveryType())
+                .build();
+    }
+
+    public Product update(ProductRequest updateRequest, UploadImg updateImg) {
+        return Product.builder()
+                .name(updateRequest.getName())
+                .supplyingPrice(updateRequest.getSupplyingPrice())
+                .sellingPrice(updateRequest.getSellingPrice())
+                .img(updateImg.getStorageName())
+                .description(updateRequest.getDescription())
+                .categoryId(updateRequest.getCategoryId())
+                .deliveryType(updateRequest.getDeliveryType())
                 .build();
     }
 }

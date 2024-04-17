@@ -17,6 +17,20 @@
         </foreach>
     </insert>
 
+    <update id="updateProduct">
+        update product
+        set name = #{name}, selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice}, description = #{description}, img = #{img}, reg_date = #{regDate},
+        category_id = #{categoryId}, delivery_type = #{deliveryType}
+    </update>
+
+    <update id="updateSubImgs">
+        update detail_img (path)
+        set
+        <foreach collection="list" item="detailImg" separator=",">
+             (path = #{detailImg.path}, #{detailImg.productId})
+        </foreach>
+    </update>
+
     <select id="findById">
         select
         *
@@ -43,45 +57,59 @@
         order by id desc
     </select>
 
-
-    <!--<select id="findAll" resultType="list">
-        SELECT
+    <select id="findImgs">
+        select
         *
-        FROM product
-        <where>
-            <if test="type == 'title'">
-                name like '%${keyword}%'
-            </if>
-
-            <if test="type == 'description'">
-                description like '%${keyword}%'
-            </if>
-        </where>
-        ORDER BY id DESC
-        limit #{offset},#{size}
+        from detail_img
+        where product_id = #{id}
     </select>
 
-    <select id="count" resultType="int">
-        SELECT
-        count(id)
-        FROM product
-        <where>
-            <if test="type == 'title'">
-                name like '%${keyword}%'
-            </if>
 
-            <if test="type == 'description'">
-                description like '%${keyword}%'
-            </if>
-        </where>
-    </select>
+    <!--<update id="updateProductById">
+     UPDATE product
+     SET name = #{name},selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice}, description =
+     #{description}, img = #{img} where id = #{id}
+ </update>
 
-    <select id="findById">
-        SELECT
-        *
-        FROM product
-        where id = #{id}
-    </select>
+
+ <!-<select id="findAll" resultType="list">
+     SELECT
+     *
+     FROM product
+     <where>
+         <if test="type == 'title'">
+             name like '%${keyword}%'
+         </if>
+
+         <if test="type == 'description'">
+             description like '%${keyword}%'
+         </if>
+     </where>
+     ORDER BY id DESC
+     limit #{offset},#{size}
+ </select>
+
+ <select id="count" resultType="int">
+     SELECT
+     count(id)
+     FROM product
+     <where>
+         <if test="type == 'title'">
+             name like '%${keyword}%'
+         </if>
+
+         <if test="type == 'description'">
+             description like '%${keyword}%'
+         </if>
+     </where>
+ </select>
+
+ <select id="findById">
+     SELECT
+     *
+     FROM product
+     where id = #{id}
+ </select>
 -->
     <!--<update id="updateProductById">
         UPDATE product

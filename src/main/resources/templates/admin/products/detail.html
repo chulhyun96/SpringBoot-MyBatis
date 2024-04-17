@@ -11,13 +11,14 @@
 <body>
 <main layout:fragment="main" class="n-panel n-main-panel ">
     <section class="d:flex fl-grow:1 ai:center mb:8 border-bottom">
-        <form method="post" th:action="@{/admin/products/{id}/edit(id=${product.id})}"  th:object="${product}"
+        <form method="post" th:action="@{/admin/products/{id}/update(id=${product.id})}" th:object="${product}"
               class="d:flex  flex-direction:column w:100p mr:10 border-left pl:10" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
             <div>
-                <img id="imgId" th:src="@{'/image/products/main/'+${product.img}}" th:value="@{'/image/products/main/'+${product.img}}"
+                <img id="imgId" th:src="@{'/image/products/main/'+${product.img}}"
+                     th:value="@{'/image/products/main/'+${product.img}}"
                      class="w:7 mt:10 ml:10 p:5 border"/>
-                <input class="m:10" type="file" name="img"/>
+                <input class="m:10" type="file" name="img" th:value="${product.img}" th:field="*{img}"/>
             </div>
             <label>상품이름</label>
             <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6"
@@ -33,20 +34,45 @@
                       th:field="*{description}"></textarea>
             <label>등록일자</label>
             <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6" th:field="*{regDate}">
-            <label>카테고리</label>
-            <select name="categoryId" class="n-dropdown">
-                <option th:each="category : ${categories}"
-                        th:value="${category.id}"
-                        value="javascript"
-                        class="n-dropdown-item"
-                        th:text="${category.name}">
-                </option>
-            </select>
 
+            <div class="mb:10">
+                <label class="sub-img-label">
+                    <span>디테일 사진</span>
+                    <input type="file" class="d:none sub-img-input" th:value="${product.img}" th:field="*{img}" multiple/>
+                    <span class="sub-img-box d:flex flex-direction:row">
+                    <span class="d:flex jc:center al-items:center w:5 h:5 bg-color:base-3">
+                        <span class="icon icon:camera icon-size:5  icon-color:base-1"></span>
+                    </span>
+                </span>
+                </label>
+            </div>
 
+            <div class="n-form w:4">
+                <label>
+                    <select th:field="*{categoryId}" class="n-dropdown">
+                        <option value="">카테고리</option>
+                        <option th:each="category : ${categories}"
+                                th:value="${category.id}"
+                                th:text="${category.name}">
+                        </option>
+                    </select>
+                </label>
+            </div>
 
-            <button type="submit" class="n-btn mt:4">수정</button>
-            <a type="button" class="n-btn n-btn-color:sub mt:1" th:href="@{/templates/admin/products}">목록</a>
+            <div class="n-form w:4">
+                <label>
+                    <select th:field="*{deliveryType}" class="n-dropdown">
+                        <option value="">배송 선택</option>
+                        <option th:each="delivery : ${deliveryTypes}"
+                                th:value="${delivery.id}"
+                                th:text="${delivery.type}">
+                        </option>
+                    </select>
+                </label>
+            </div>
+
+            <button class="n-btn mt:4">수정</button>
+            <a type="button" class="n-btn n-btn-color:sub mt:1" th:href="@{/admin/products}">목록</a>
         </form>
     </section>
 </main>

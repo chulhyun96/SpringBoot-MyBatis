@@ -12,9 +12,20 @@ import java.util.List;
 @Mapper
 public interface ProductRepository {
     void saveProduct(Product product);
+
     void saveSubImg(List<DetailImg> detailImgList);
+
     Product findById(Long id);
+
     List<ProductListView> findAll();
+
     List<Category> findCategories();
+
     List<DeliveryType> findDeliveryTypes();
+
+    void updateProduct(Product updatedProduct);
+
+    void updateSubImgs(List<DetailImg> uploadImgs);
+
+    List<DetailImg> findImgs(Long id);
 }

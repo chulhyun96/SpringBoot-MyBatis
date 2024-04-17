@@ -23,7 +23,7 @@
         <div>
             <label>
                 <span>판매가</span>
-                <input type="text"  th:field="*{sellingPrice}" required/>
+                <input type="text" th:field="*{sellingPrice}" required/>
             </label>
         </div>
         <div>
@@ -39,31 +39,31 @@
             </label>
         </div>
 
-        <label>
-            <select th:field="*{categoryId}" class="n-select">
-                <option value="">카테고리</option>
-                <option th:each="category : ${categories}"
-                        class="n-dropdown-item"
-                        th:value="${category.id}"
-                        th:text="${category.name}">
-                </option>
-            </select>
-        </label>
-
-        <div>
-            <!--줄 바꿈-->
+        <div class="n-form w:4">
+            <label>
+                <select th:field="*{categoryId}" class="n-select">
+                    <option value="">카테고리</option>
+                    <option th:each="category : ${categories}"
+                            class="n-dropdown-item"
+                            th:value="${category.id}"
+                            th:text="${category.name}">
+                    </option>
+                </select>
+            </label>
         </div>
 
-        <label>
-            <select th:field="*{deliveryType}" class="n-select">
-                <option value="">배송 선택</option>
-                <option th:each="delivery : ${deliveryTypes}"
-                        class="n-dropdown-item"
-                        th:value="${delivery.id}"
-                        th:text="${delivery.type}">
-                </option>
-            </select>
-        </label>
+        <div class="n-form w:4">
+            <label>
+                <select th:field="*{deliveryType}" class="n-select">
+                    <option value="">배송 선택</option>
+                    <option th:each="delivery : ${deliveryTypes}"
+                            class="n-dropdown-item"
+                            th:value="${delivery.id}"
+                            th:text="${delivery.type}">
+                    </option>
+                </select>
+            </label>
+        </div>
 
         <div>
             <label class="main-img-label">
