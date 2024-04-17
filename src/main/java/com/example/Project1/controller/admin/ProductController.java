@@ -2,7 +2,6 @@ package com.example.Project1.controller.admin;
 
 import com.example.Project1.domain.dto.request.product.ProductListView;
 import com.example.Project1.domain.dto.request.product.ProductRequest;
-import com.example.Project1.domain.entity.Product;
 import com.example.Project1.domain.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,16 +37,18 @@ public class ProductController {
     }
     @GetMapping("/{id}")
     public String updateForm(@PathVariable Long id, Model model) {
-        Product findProduct = service.getProductById(id);
+        //이게 ProductRequest여야 MultipartFile을 받을 수 있음
+        ProductRequest findProduct = service.getProductById(id);
         model.addAttribute("product", findProduct);
         model.addAttribute("categories", service.getCategories());
         model.addAttribute("deliveryTypes", service.getDeliveryTypes());
-        log.info("findProduct = {}", findProduct);
+        log.info("UpdateForm ProductRegRequest = {}", findProduct);
         return "/admin/products/detail";
     }
     @PostMapping("/{id}/update")
     public String update(ProductRequest updateRequest) throws IOException {
         log.info("Update Method ProductUpdateRequest = {}", updateRequest);
+        // update에서 수정해야함
         service.update(updateRequest);
         return "redirect:/admin/products";
     }

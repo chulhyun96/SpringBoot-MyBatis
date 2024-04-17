@@ -19,17 +19,21 @@
 
     <update id="updateProduct">
         update product
-        set name = #{name}, selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice}, description = #{description}, img = #{img}, reg_date = #{regDate},
+        set name = #{name}, selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice},
+        description = #{description}, img = #{img},
         category_id = #{categoryId}, delivery_type = #{deliveryType}
+        WHERE id = #{id}
     </update>
 
+
     <update id="updateSubImgs">
-        update detail_img (path)
-        set
-        <foreach collection="list" item="detailImg" separator=",">
-             (path = #{detailImg.path}, #{detailImg.productId})
+        <foreach collection="list" item="detailImg" open="" close="" separator=";">
+            UPDATE detail_img
+            SET path = #{detailImg.path}
+            WHERE product_id = #{detailImg.productId}
         </foreach>
     </update>
+
 
     <select id="findById">
         select

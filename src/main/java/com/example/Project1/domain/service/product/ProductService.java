@@ -40,25 +40,25 @@ public class ProductService {
                         .build())
                 .collect(Collectors.toList());
         repository.saveSubImg(detailImgList);
+
     }
 
-    @Transactional
     public void update(ProductRequest updateRequest) throws IOException {
+        log.info("See Img updateRequest = {}", updateRequest.getImage());
         Product foundProduct = repository.findById(updateRequest.getId());
-
         UploadImg updateImg = imgStore.storeMainImg(updateRequest.getImage());
+
         Product updatedProduct = foundProduct.update(updateRequest,updateImg);
         repository.updateProduct(updatedProduct);
 
-        List<DetailImg> foundImgs = repository.findImgs(updateRequest.getId());
-        log.info("found imgs : {}", foundImgs);
         List<DetailImg> uploadImgs = imgStore.storeSubImgs(updateRequest.getImages()).stream()
                 .map(img -> DetailImg.builder()
-                        .path(img.getStorageName())
                         .productId(updatedProduct.getId())
+                        .path(img.getStorageName())
                         .build())
                         .collect(Collectors.toList());
         repository.updateSubImgs(uploadImgs);
+
     }
 
     public List<ProductListView> getList() {
@@ -74,5 +74,7 @@ public class ProductService {
 
     public ProductRequest getProductById(Long id) {
         Product foundProduct = repository.findById(id);
+        log.info("See RegDate found product : {}", foundProduct);
+        return ProductRequest.toRequest(foundProduct);
     }
 }

@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Builder
 @Data
 @NoArgsConstructor
@@ -20,7 +18,7 @@ public class Product {
     private Integer sellingPrice;
     private String img;
     private String description;
-    private LocalDate regDate;
+    private String regDate;
     private Long categoryId;
     private Long deliveryType;
 
@@ -38,6 +36,7 @@ public class Product {
 
     public Product update(ProductRequest updateRequest, UploadImg updateImg) {
         return Product.builder()
+                .id(updateRequest.getId())
                 .name(updateRequest.getName())
                 .supplyingPrice(updateRequest.getSupplyingPrice())
                 .sellingPrice(updateRequest.getSellingPrice())

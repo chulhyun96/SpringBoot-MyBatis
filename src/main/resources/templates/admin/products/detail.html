@@ -15,10 +15,10 @@
               class="d:flex  flex-direction:column w:100p mr:10 border-left pl:10" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
             <div>
-                <img id="imgId" th:src="@{'/image/products/main/'+${product.img}}"
-                     th:value="@{'/image/products/main/'+${product.img}}"
+                <img id="imgId" th:src="@{'/image/products/main/'+${image}}"
+                     th:value="@{'/image/products/main/'+${image}}"
                      class="w:7 mt:10 ml:10 p:5 border"/>
-                <input class="m:10" type="file" name="img" th:value="${product.img}" th:field="*{img}"/>
+                <input class="m:10" type="file" name="img" th:field="*{image}"/>
             </div>
             <label>상품이름</label>
             <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6"
@@ -31,14 +31,14 @@
                    th:field="*{supplyingPrice}">
             <label>설명</label>
             <textarea class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6 description" rows="7"
-                      th:field="*{description}"></textarea>
+                      th:value="${product.description}" th:field="*{description}"></textarea>
             <label>등록일자</label>
-            <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6" th:field="*{regDate}">
+            <input class="mt:1 bd border-width:1 bd-radius:3 w:100p p:3 pl:6" th:value="${product.regDate}" th:field="*{regDate}">
 
             <div class="mb:10">
                 <label class="sub-img-label">
                     <span>디테일 사진</span>
-                    <input type="file" class="d:none sub-img-input" th:value="${product.img}" th:field="*{img}" multiple/>
+                    <input type="file" class="d:none sub-img-input" th:value="${product.image}" th:field="*{images}" multiple/>
                     <span class="sub-img-box d:flex flex-direction:row">
                     <span class="d:flex jc:center al-items:center w:5 h:5 bg-color:base-3">
                         <span class="icon icon:camera icon-size:5  icon-color:base-1"></span>
