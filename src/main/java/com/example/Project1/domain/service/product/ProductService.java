@@ -1,7 +1,10 @@
 package com.example.Project1.domain.service.product;
 
 import com.example.Project1.domain.dto.request.img.UploadImg;
+import com.example.Project1.domain.dto.request.product.ProductListView;
 import com.example.Project1.domain.dto.request.product.ProductRegRequest;
+import com.example.Project1.domain.entity.Category;
+import com.example.Project1.domain.entity.DeliveryType;
 import com.example.Project1.domain.entity.DetailImg;
 import com.example.Project1.domain.entity.Product;
 import com.example.Project1.domain.repository.ProductRepository;
@@ -39,5 +42,21 @@ public class ProductService {
                     build());
         }
         repository.saveSubImg(detailImgList);
+    }
+
+    public void update(ProductRegRequest productRegRequest) {
+        Product foundProduct = repository.findById(productRegRequest.getId());
+        log.info("foundProduct = {}", foundProduct);
+    }
+
+    public List<ProductListView> getList() {
+        return repository.findAll();
+    }
+    public List<Category> getCategories() {
+        return repository.findCategories();
+    }
+
+    public List<DeliveryType> getDeliveryTypes() {
+        return repository.findDeliveryTypes();
     }
 }

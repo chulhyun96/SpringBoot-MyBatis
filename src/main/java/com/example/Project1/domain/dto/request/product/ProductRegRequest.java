@@ -23,4 +23,5 @@ public class ProductRegRequest {
     private List<MultipartFile> images;
     private Date regDate;
     private Long categoryId;
+    private Long deliveryType;
 }

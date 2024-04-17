@@ -12,7 +12,5 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: mappers/*Mapper.xml
-  type-aliases-package: com.example.Project1.domain.entity
-
 
 

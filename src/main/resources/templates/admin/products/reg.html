@@ -39,6 +39,32 @@
             </label>
         </div>
 
+        <label>
+            <select th:field="*{categoryId}" class="n-select">
+                <option value="">카테고리</option>
+                <option th:each="category : ${categories}"
+                        class="n-dropdown-item"
+                        th:value="${category.id}"
+                        th:text="${category.name}">
+                </option>
+            </select>
+        </label>
+
+        <div>
+            <!--줄 바꿈-->
+        </div>
+
+        <label>
+            <select th:field="*{deliveryType}" class="n-select">
+                <option value="">배송 선택</option>
+                <option th:each="delivery : ${deliveryTypes}"
+                        class="n-dropdown-item"
+                        th:value="${delivery.id}"
+                        th:text="${delivery.type}">
+                </option>
+            </select>
+        </label>
+
         <div>
             <label class="main-img-label">
                 <span>대표 사진</span>
@@ -63,15 +89,6 @@
                 </span>
             </label>
         </div>
-
-        <label>카테고리
-            <select th:field="*{categoryId}" class="n-dropdown">
-                <option th:each="category : ${categories}"
-                        class="n-dropdown-item"
-                        th:text="${category.name}">JavaScript
-                </option>
-            </select>
-        </label>
 
         <div class="d:flex flex-direction:row justify-content:end">
             <button class="n-btn n-btn-size:3">

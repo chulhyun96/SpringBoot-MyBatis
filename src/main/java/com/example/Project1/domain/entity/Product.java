@@ -22,6 +22,7 @@ public class Product {
     private String description;
     private LocalDate regDate;
     private Long categoryId;
+    private Long deliveryType;
 
     public static Product toEntity(ProductRegRequest request, UploadImg uploadImg) {
         return Product.builder()
@@ -31,6 +32,7 @@ public class Product {
                 .description(request.getDescription())
                 .img(uploadImg.getStorageName())
                 .categoryId(request.getCategoryId())
+                .deliveryType(request.getDeliveryType())
                 .build();
     }
 }

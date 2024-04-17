@@ -5,8 +5,8 @@
 <mapper namespace="com.example.Project1.domain.repository.ProductRepository">
 
     <insert id="saveProduct" useGeneratedKeys="true" keyProperty="id">
-        insert into product(name, selling_price, supplying_price, description ,img, category_id)
-        values (#{name}, #{sellingPrice}, #{supplyingPrice}, #{description}, #{img}, #{categoryId});
+        insert into product(name, selling_price, supplying_price, description ,img, category_id, delivery_type)
+        values (#{name}, #{sellingPrice}, #{supplyingPrice}, #{description}, #{img}, #{categoryId}, #{deliveryType});
     </insert>
 
     <insert id="saveSubImg" useGeneratedKeys="true" keyProperty="id">
@@ -17,6 +17,31 @@
         </foreach>
     </insert>
 
+    <select id="findById">
+        select
+        *
+        from product
+        where id = #{id}
+    </select>
+
+    <select id="findCategories">
+        select
+        *
+        from category
+    </select>
+
+    <select id="findDeliveryTypes">
+        select
+        *
+        from delivery_type
+    </select>
+
+    <select id="findAll" resultType="ProductListView">
+        select
+        id, name, selling_price, supplying_price, img, reg_date
+        from product
+        order by id desc
+    </select>
 
 
     <!--<select id="findAll" resultType="list">
