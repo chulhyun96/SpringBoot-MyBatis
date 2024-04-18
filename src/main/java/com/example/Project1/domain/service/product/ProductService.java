@@ -44,7 +44,6 @@ public class ProductService {
     }
 
     public void update(ProductRequest updateRequest) throws IOException {
-        log.info("See Img updateRequest = {}", updateRequest.getImage());
         Product foundProduct = repository.findById(updateRequest.getId());
         UploadImg updateImg = imgStore.storeMainImg(updateRequest.getImage());
 

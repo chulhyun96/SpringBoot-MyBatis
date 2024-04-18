@@ -1,8 +1,9 @@
 package com.example.Project1.domain.service.product.img;
 
 import com.example.Project1.domain.dto.request.img.UploadImg;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,12 +18,11 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+@Data
+@ConfigurationProperties(prefix = "file")
 public class ImgStore {
-    @Value("${file.dir.img.main}")
-    private String imgMainDir;
-
-    @Value("${file.dir.img.sub}")
-    private String imgSubDir;
+    private String mainImgDir;
+    private String subImgDir;
 
     public List<UploadImg> storeSubImgs(List<MultipartFile> imgFiles) {
         if (imgFiles.isEmpty()) {
@@ -37,7 +37,7 @@ public class ImgStore {
                         createDirIfNonExist(fullSubImgPath);
                         subImgFile.transferTo(new File(fullSubImgPath));
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        throw new RuntimeException(e.getMessage());
                     }
                     return new UploadImg(originalImgName, storeImgName);
                 }).collect(Collectors.toList());
@@ -58,11 +58,11 @@ public class ImgStore {
     }
 
     private String getFullMainImgPath(String fileName) {
-        return System.getProperty("user.dir") + imgMainDir + fileName;
+        return System.getProperty("user.dir") + mainImgDir + fileName;
     }
 
     private String getFullSubImgPath(String fileName) {
-        return System.getProperty("user.dir") + imgSubDir + fileName;
+        return System.getProperty("user.dir") + subImgDir + fileName;
     }
 
     private void createDirIfNonExist(String storeImgName) throws IOException {

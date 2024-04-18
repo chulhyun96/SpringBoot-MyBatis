@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "file.dir.img.sub",
+      "type": "java.lang.String",
+      "description": "Description for file.dir.img.sub."
+  }
+] }
