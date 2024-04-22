@@ -28,7 +28,7 @@ public class DetailImg {
                 .toList();
     }
 
-    public static List<DetailImg> updateFrom(List<UploadImg> subImgs, List<DetailImg> detailImgs) {
+    public static List<DetailImg> updateOf(List<UploadImg> subImgs, List<DetailImg> detailImgs) {
         return IntStream.range(0, subImgs.size())
                 .mapToObj(i -> {
                     DetailImg detailImg = detailImgs.get(i);

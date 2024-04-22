@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -43,9 +44,9 @@ public class ImgStore {
                 }).collect(Collectors.toList());
     }
 
-    public UploadImg storeMainImg(MultipartFile imgFile) throws IOException {
+    public Optional<UploadImg> storeMainImg(MultipartFile imgFile) throws IOException {
         if (imgFile.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
         String originalImgName = imgFile.getOriginalFilename();
         String storeImgName = createStoreImgName(originalImgName);
@@ -54,7 +55,7 @@ public class ImgStore {
         createDirIfNonExist(fullMainImgPath);
 
         imgFile.transferTo(new File(fullMainImgPath));
-        return new UploadImg(originalImgName, storeImgName);
+        return Optional.of(new UploadImg(originalImgName, storeImgName));
     }
 
     private String getFullMainImgPath(String fileName) {

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -27,8 +28,9 @@ public class ProductService {
     @Transactional
     public void reg(ProductRequest regRequest) throws IOException {
         //Product
-        UploadImg uploadImg = imgStore.storeMainImg(regRequest.getImage());
-        Product newProduct = Product.toEntity(regRequest, uploadImg);
+        Optional<UploadImg> uploadImg = imgStore.storeMainImg(regRequest.getImage());
+        Product newProduct = Product.toEntity(regRequest,
+                uploadImg.orElse(new UploadImg("Non-Img","Non-Img")));
         repository.saveProduct(newProduct);
 
         //DetailImg
@@ -36,16 +38,17 @@ public class ProductService {
         repository.saveSubImg(from);
 
     }
-
+    @Transactional
     public void update(ProductRequest updateRequest) throws IOException {
         Product foundProduct = repository.findById(updateRequest.getId());
-        UploadImg updateImg = imgStore.storeMainImg(updateRequest.getImage());
-        Product updatedProduct = foundProduct.update(updateRequest, updateImg);
+        Optional<UploadImg> updateImg = imgStore.storeMainImg(updateRequest.getImage());
+        Product updatedProduct = foundProduct.update(updateRequest,
+                updateImg.orElse(new UploadImg("Non-Img","Non-Img")));
         repository.updateProduct(updatedProduct);
 
         List<DetailImg> imgs = repository.findImgs(updateRequest.getId());
         List<UploadImg> uploadImgs = imgStore.storeSubImgs(updateRequest.getImages());
-        List<DetailImg> updateDetailImgs = DetailImg.updateFrom(uploadImgs, imgs);
+        List<DetailImg> updateDetailImgs = DetailImg.updateOf(uploadImgs, imgs);
         repository.updateSubImgs(updateDetailImgs);
     }
 
