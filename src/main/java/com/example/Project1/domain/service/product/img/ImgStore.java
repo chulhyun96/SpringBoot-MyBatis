@@ -25,11 +25,11 @@ public class ImgStore {
     private String mainImgDir;
     private String subImgDir;
 
-    public List<UploadImg> storeSubImgs(List<MultipartFile> imgFiles) {
+    public Optional<List<UploadImg>> storeSubImgs(List<MultipartFile> imgFiles) {
         if (imgFiles.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
-        return imgFiles.stream()
+        return Optional.of(imgFiles.stream()
                 .map(subImgFile -> {
                     String originalImgName = subImgFile.getOriginalFilename();
                     String storeImgName = createStoreImgName(originalImgName);
@@ -41,7 +41,7 @@ public class ImgStore {
                         throw new RuntimeException(e.getMessage());
                     }
                     return new UploadImg(originalImgName, storeImgName);
-                }).collect(Collectors.toList());
+                }).collect(Collectors.toList()));
     }
 
     public Optional<UploadImg> storeMainImg(MultipartFile imgFile) throws IOException {

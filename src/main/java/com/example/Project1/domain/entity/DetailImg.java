@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Data
@@ -31,10 +32,17 @@ public class DetailImg {
     public static List<DetailImg> updateOf(List<UploadImg> subImgs, List<DetailImg> detailImgs) {
         return IntStream.range(0, subImgs.size())
                 .mapToObj(i -> {
-                    DetailImg detailImg = detailImgs.get(i);
-                    detailImg.setPath(subImgs.get(i).getStorageName());
+                    DetailImg detailImg;
+                    if (i < detailImgs.size()) {
+                        detailImg = detailImgs.get(i);
+                        detailImg.setPath(subImgs.get(i).getStorageName());
+                    } else {
+                        detailImg = DetailImg.builder()
+                                .path(subImgs.get(i).getStorageName())
+                                .build();
+                    }
                     return detailImg;
                 })
-                .toList();
+                .collect(Collectors.toList());
     }
 }

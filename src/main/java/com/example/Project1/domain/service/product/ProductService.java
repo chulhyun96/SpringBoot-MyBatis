@@ -30,11 +30,14 @@ public class ProductService {
         //Product
         Optional<UploadImg> uploadImg = imgStore.storeMainImg(regRequest.getImage());
         Product newProduct = Product.toEntity(regRequest,
-                uploadImg.orElse(new UploadImg("Non-Img","Non-Img")));
+                uploadImg.orElseGet(() -> new UploadImg("Non-Img","Non-Img")));
         repository.saveProduct(newProduct);
 
         //DetailImg
-        List<DetailImg> from = DetailImg.from(imgStore.storeSubImgs(regRequest.getImages()), newProduct);
+        List<DetailImg> from = imgStore.storeSubImgs(regRequest.getImages())
+                .map(uploadImgs -> DetailImg.from(uploadImgs, newProduct))
+                .orElseGet(() -> DetailImg.from(
+                        List.of(new UploadImg("Non-Img", "Non-Img")), newProduct));
         repository.saveSubImg(from);
 
     }
@@ -43,12 +46,15 @@ public class ProductService {
         Product foundProduct = repository.findById(updateRequest.getId());
         Optional<UploadImg> updateImg = imgStore.storeMainImg(updateRequest.getImage());
         Product updatedProduct = foundProduct.update(updateRequest,
-                updateImg.orElse(new UploadImg("Non-Img","Non-Img")));
+                updateImg.orElseGet( () -> new UploadImg("Non-Img","Non-Img")));
         repository.updateProduct(updatedProduct);
 
         List<DetailImg> imgs = repository.findImgs(updateRequest.getId());
-        List<UploadImg> uploadImgs = imgStore.storeSubImgs(updateRequest.getImages());
-        List<DetailImg> updateDetailImgs = DetailImg.updateOf(uploadImgs, imgs);
+        List<DetailImg> updateDetailImgs = imgStore.storeSubImgs(updateRequest.getImages())
+                        .map(updateUploadImg -> DetailImg.updateOf(updateUploadImg, imgs))
+                        .orElseGet( () -> DetailImg.updateOf(
+                                List.of(new UploadImg("Non-Img", "Non-Img")),imgs)
+                        );
         repository.updateSubImgs(updateDetailImgs);
     }
 
