@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -33,33 +32,21 @@ public class ProductService {
         repository.saveProduct(newProduct);
 
         //DetailImg
-        List<DetailImg> detailImgList = imgStore.storeSubImgs(regRequest.getImages()).stream()
-                .map(img -> DetailImg.builder()
-                        .path(img.getStorageName())
-                        .productId(newProduct.getId())
-                        .build())
-                .collect(Collectors.toList());
-        repository.saveSubImg(detailImgList);
+        List<DetailImg> from = DetailImg.from(imgStore.storeSubImgs(regRequest.getImages()), newProduct);
+        repository.saveSubImg(from);
 
     }
 
     public void update(ProductRequest updateRequest) throws IOException {
         Product foundProduct = repository.findById(updateRequest.getId());
         UploadImg updateImg = imgStore.storeMainImg(updateRequest.getImage());
-
         Product updatedProduct = foundProduct.update(updateRequest, updateImg);
         repository.updateProduct(updatedProduct);
 
         List<DetailImg> imgs = repository.findImgs(updateRequest.getId());
         List<UploadImg> uploadImgs = imgStore.storeSubImgs(updateRequest.getImages());
-        List<DetailImg> detailImgs = imgs.stream()
-                .map(img -> DetailImg.builder()
-                        .id(img.getId())
-                        .path(uploadImgs.get(imgs.indexOf(img)).getStorageName())
-                        .productId(updateRequest.getId())
-                        .build())
-                .collect(Collectors.toList());
-        repository.updateSubImgs(detailImgs);
+        List<DetailImg> updateDetailImgs = DetailImg.updateFrom(uploadImgs, imgs);
+        repository.updateSubImgs(updateDetailImgs);
     }
 
     public List<ProductListView> getList() {
