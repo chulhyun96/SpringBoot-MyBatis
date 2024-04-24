@@ -28,39 +28,43 @@ public class ProductService {
     @Transactional
     public void reg(ProductRequest regRequest) throws IOException {
         //Product
-        Optional<UploadImg> uploadImg = imgStore.storeMainImg(regRequest.getImage());
+        Product product = repository.findById(regRequest.getId());
+        Optional<UploadImg> uploadImg = imgStore.storeMainImg(regRequest.getImage(), product);
         Product newProduct = Product.toEntity(regRequest,
-                uploadImg.orElseGet(() -> new UploadImg("Non-Img","Non-Img")));
+                uploadImg.orElseGet(() -> new UploadImg("Non-Img", "Non-Img")));
         repository.saveProduct(newProduct);
 
         //DetailImg
-        List<DetailImg> from = imgStore.storeSubImgs(regRequest.getImages())
+        List<DetailImg> foundImgs = repository.findImgs(regRequest.getId());
+        List<DetailImg> from = imgStore.storeSubImgs(regRequest.getImages(), foundImgs)
                 .map(uploadImgs -> DetailImg.from(uploadImgs, newProduct))
                 .orElseGet(() -> DetailImg.from(
                         List.of(new UploadImg("Non-Img", "Non-Img")), newProduct));
         repository.saveSubImg(from);
 
     }
+
     @Transactional
     public void update(ProductRequest updateRequest) throws IOException {
         //Update Main image
         Product foundProduct = repository.findById(updateRequest.getId());
-        Optional<UploadImg> updateImg = imgStore.storeMainImg(updateRequest.getImage());
+        Optional<UploadImg> updateImg = imgStore.storeMainImg(updateRequest.getImage(), foundProduct);
         Product updatedProduct = foundProduct.update(updateRequest,
-                updateImg.orElseGet( () -> new UploadImg("Non-Img","Non-Img")));
+                updateImg.orElseGet(() -> new UploadImg("Non-Img", "Non-Img")));
         repository.updateProduct(updatedProduct);
 
 
         //Update Sub image
         List<DetailImg> foundImgs = repository.findImgs(updateRequest.getId());
-        List<DetailImg> updateDetailImgs = imgStore.storeSubImgs(updateRequest.getImages())
+        List<DetailImg> updateDetailImgs = imgStore.storeSubImgs(updateRequest.getImages(), foundImgs)
                 .map(updateUploadImg -> DetailImg.updateOf(updateUploadImg, foundImgs))
-                .orElseGet( () -> DetailImg.updateOf(
-                        List.of(new UploadImg("Non-Img", "Non-Img")),foundImgs)
+                .orElseGet(() -> DetailImg.updateOf(
+                        List.of(new UploadImg("Non-Img", "Non-Img")), foundImgs)
                 );
-        for (DetailImg detailImg : updateDetailImgs) {
-            log.info("DetailImg = {}", detailImg.toString());
-        }
+        updateSubImgs(updateRequest, foundImgs, updateDetailImgs);
+    }
+
+    private void updateSubImgs(ProductRequest updateRequest, List<DetailImg> foundImgs, List<DetailImg> updateDetailImgs) {
         // Request is more than FindImgs
         if (foundImgs.size() < updateRequest.getImagesSize()) {
             //updateRequest (1,2,3,4) -> subList(2,4) -> 3,4

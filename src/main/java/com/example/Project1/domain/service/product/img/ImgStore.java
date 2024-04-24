@@ -1,6 +1,8 @@
 package com.example.Project1.domain.service.product.img;
 
 import com.example.Project1.domain.dto.request.img.UploadImg;
+import com.example.Project1.domain.entity.DetailImg;
+import com.example.Project1.domain.entity.Product;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -24,8 +26,9 @@ import java.util.stream.Collectors;
 public class ImgStore {
     private String mainImgDir;
     private String subImgDir;
+    private UploadImg uploadImg;
 
-    public Optional<List<UploadImg>> storeSubImgs(List<MultipartFile> imgFiles) {
+    public Optional<List<UploadImg>> storeSubImgs(List<MultipartFile> imgFiles, List<DetailImg> foundImgs) {
         if (imgFiles.stream().allMatch(MultipartFile::isEmpty)) {
             return Optional.empty();
         }
@@ -34,6 +37,10 @@ public class ImgStore {
                     String originalImgName = subImgFile.getOriginalFilename();
                     String storeImgName = createStoreImgName(originalImgName);
                     try {
+                        for (DetailImg foundImg : foundImgs) {
+                            Path oldPath = Paths.get(getFullSubImgPath(foundImg.getPath()));
+                            deleteFileIfExist(oldPath);
+                        }
                         String fullSubImgPath = getFullSubImgPath(originalImgName);
                         createDirIfNonExist(fullSubImgPath);
                         subImgFile.transferTo(new File(fullSubImgPath));
@@ -44,24 +51,30 @@ public class ImgStore {
                 }).collect(Collectors.toList()));
     }
 
-    public Optional<UploadImg> storeMainImg(MultipartFile imgFile) throws IOException {
-        if (imgFile.isEmpty() || imgFile == null) {
+    public Optional<UploadImg> storeMainImg(MultipartFile imgFile, Product product) throws IOException {
+        if (imgFile.isEmpty()) {
             return Optional.empty();
         }
         String originalImgName = imgFile.getOriginalFilename();
-        String storeImgName = createStoreImgName(originalImgName);
 
+        if (product != null) {
+            Path oldPath = Paths.get(getFullMainImgPath(product.getImg()));
+            deleteFileIfExist(oldPath);
+        }
+
+        String storeImgName = createStoreImgName(originalImgName);
         String fullMainImgPath = getFullMainImgPath(storeImgName);
         createDirIfNonExist(fullMainImgPath);
 
         imgFile.transferTo(new File(fullMainImgPath));
         return Optional.of(new UploadImg(originalImgName, storeImgName));
     }
-    /*public Optional<UploadImg> updateMainImgFile(MultipartFile imgFile) throws IOException {
-        if (imgFile.isEmpty()) {
-            return Optional.empty();
+
+    private static void deleteFileIfExist(Path oldPath) throws IOException {
+        if (Files.exists(oldPath)) {
+            Files.delete(oldPath);
         }
-    }*/
+    }
 
 
     private String getFullMainImgPath(String fileName) {
