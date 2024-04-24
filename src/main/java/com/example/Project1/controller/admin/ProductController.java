@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +32,12 @@ public class ProductController {
         return "/admin/products/reg";
     }
     @PostMapping("/new")
-    public String reg(ProductRequest regRequest) throws IOException {
+    public String reg(@Validated ProductRequest regRequest, BindingResult bindingResult, Model model) throws IOException {
+        if (bindingResult.hasErrors()) {
+            log.info("Reg Form Error : {}", bindingResult + "\n");
+            return "redirect:/admin/products/new";
+        }
+
         service.reg(regRequest);
         log.info("ProductRegRequest = {}", regRequest);
         return "redirect:/admin/products";
