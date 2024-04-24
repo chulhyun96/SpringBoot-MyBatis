@@ -34,7 +34,7 @@ public class ImgStore {
                     String originalImgName = subImgFile.getOriginalFilename();
                     String storeImgName = createStoreImgName(originalImgName);
                     try {
-                        String fullSubImgPath = getFullSubImgPath(storeImgName);
+                        String fullSubImgPath = getFullSubImgPath(originalImgName);
                         createDirIfNonExist(fullSubImgPath);
                         subImgFile.transferTo(new File(fullSubImgPath));
                     } catch (IOException e) {
@@ -51,12 +51,18 @@ public class ImgStore {
         String originalImgName = imgFile.getOriginalFilename();
         String storeImgName = createStoreImgName(originalImgName);
 
-        String fullMainImgPath = getFullMainImgPath(storeImgName);
+        String fullMainImgPath = getFullMainImgPath(originalImgName);
         createDirIfNonExist(fullMainImgPath);
 
         imgFile.transferTo(new File(fullMainImgPath));
         return Optional.of(new UploadImg(originalImgName, storeImgName));
     }
+    /*public Optional<UploadImg> updateMainImgFile(MultipartFile imgFile) throws IOException {
+        if (imgFile.isEmpty()) {
+            return Optional.empty();
+        }
+    }*/
+
 
     private String getFullMainImgPath(String fileName) {
         return System.getProperty("user.dir") + mainImgDir + fileName;

@@ -43,19 +43,29 @@ public class ProductService {
     }
     @Transactional
     public void update(ProductRequest updateRequest) throws IOException {
+        //Update Main image
         Product foundProduct = repository.findById(updateRequest.getId());
         Optional<UploadImg> updateImg = imgStore.storeMainImg(updateRequest.getImage());
         Product updatedProduct = foundProduct.update(updateRequest,
                 updateImg.orElseGet( () -> new UploadImg("Non-Img","Non-Img")));
         repository.updateProduct(updatedProduct);
 
-        List<DetailImg> imgs = repository.findImgs(updateRequest.getId());
+
+        //Update Sub image
+        List<DetailImg> foundImgs = repository.findImgs(updateRequest.getId());
         List<DetailImg> updateDetailImgs = imgStore.storeSubImgs(updateRequest.getImages())
-                        .map(updateUploadImg -> DetailImg.updateOf(updateUploadImg, imgs))
-                        .orElseGet( () -> DetailImg.updateOf(
-                                List.of(new UploadImg("Non-Img", "Non-Img")),imgs)
-                        );
+                .map(updateUploadImg -> DetailImg.updateOf(updateUploadImg, foundImgs))
+                .orElseGet( () -> DetailImg.updateOf(
+                        List.of(new UploadImg("Non-Img", "Non-Img")),foundImgs)
+                );
+        // Request is more than findImgs
+        if (foundImgs.size() < updateRequest.getImages().size()) {
+            //updateRequest (1,2,3,4) -> subList(2,4) -> 3,4
+            List<DetailImg> extraImgs = updateDetailImgs.subList(foundImgs.size(), updateRequest.getImages().size());
+            repository.saveSubImg(extraImgs);
+        }
         repository.updateSubImgs(updateDetailImgs);
+
     }
 
     public List<ProductListView> getList() {
@@ -72,7 +82,6 @@ public class ProductService {
 
     public ProductRequest getProductById(Long id) {
         Product foundProduct = repository.findById(id);
-        log.info("See RegDate found product : {}", foundProduct);
         return ProductRequest.toRequest(foundProduct);
     }
 }
