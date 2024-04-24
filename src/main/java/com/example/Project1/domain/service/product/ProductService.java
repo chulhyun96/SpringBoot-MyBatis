@@ -58,14 +58,31 @@ public class ProductService {
                 .orElseGet( () -> DetailImg.updateOf(
                         List.of(new UploadImg("Non-Img", "Non-Img")),foundImgs)
                 );
-        // Request is more than findImgs
-        if (foundImgs.size() < updateRequest.getImages().size()) {
+        for (DetailImg detailImg : updateDetailImgs) {
+            log.info("DetailImg = {}", detailImg.toString());
+        }
+        // Request is more than FindImgs
+        if (foundImgs.size() < updateRequest.getImagesSize()) {
             //updateRequest (1,2,3,4) -> subList(2,4) -> 3,4
-            List<DetailImg> extraImgs = updateDetailImgs.subList(foundImgs.size(), updateRequest.getImages().size());
-            repository.saveSubImg(extraImgs);
+            List<DetailImg> extraImgs = updateDetailImgs.subList(foundImgs.size(), updateRequest.getImagesSize());
+            repository.saveSubImg(extraImgs.stream()
+                    .map(newDetailImg -> DetailImg.builder()
+                            .productId(updateRequest.getId())
+                            .path(newDetailImg.getPath())
+                            .build())
+                    .toList());
+            return;
+        }
+        // FindImgs is more than Request
+        if (foundImgs.size() > updateRequest.getImagesSize()) {
+            //FindImgs (1,2,3,4), request (5,6) ->
+            List<DetailImg> remainingImgs = foundImgs.subList(0, updateRequest.getImagesSize());
+            List<DetailImg> deleteImgs = foundImgs.subList(updateRequest.getImagesSize(), foundImgs.size());
+            repository.deleteSubImgs(deleteImgs);
+            repository.updateSubImgs(remainingImgs);
+            return;
         }
         repository.updateSubImgs(updateDetailImgs);
-
     }
 
     public List<ProductListView> getList() {

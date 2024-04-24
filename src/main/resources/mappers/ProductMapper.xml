@@ -69,64 +69,50 @@
     </select>
 
 
-    <!--<update id="updateProductById">
-     UPDATE product
-     SET name = #{name},selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice}, description =
-     #{description}, img = #{img} where id = #{id}
- </update>
+    <!--<select id="findAll" resultType="list">
+        SELECT
+        *
+        FROM product
+        <where>
+            <if test="type == 'title'">
+                name like '%${keyword}%'
+            </if>
 
+            <if test="type == 'description'">
+                description like '%${keyword}%'
+            </if>
+        </where>
+        ORDER BY id DESC
+        limit #{offset},#{size}
+    </select>-->
 
- <!-<select id="findAll" resultType="list">
-     SELECT
-     *
-     FROM product
-     <where>
-         <if test="type == 'title'">
-             name like '%${keyword}%'
-         </if>
+    <!--<select id="count" resultType="int">
+        SELECT
+        count(id)
+        FROM product
+        <where>
+            <if test="type == 'title'">
+                name like '%#{keyword}%'
+            </if>
 
-         <if test="type == 'description'">
-             description like '%${keyword}%'
-         </if>
-     </where>
-     ORDER BY id DESC
-     limit #{offset},#{size}
- </select>
+            <if test="type == 'description'">
+                description like '%#{keyword}%'
+            </if>
+        </where>
+    </select>-->
 
- <select id="count" resultType="int">
-     SELECT
-     count(id)
-     FROM product
-     <where>
-         <if test="type == 'title'">
-             name like '%${keyword}%'
-         </if>
+    <!--<select id="findById">
+        SELECT
+        *
+        FROM product
+        where id = #{id}
+    </select>-->
 
-         <if test="type == 'description'">
-             description like '%${keyword}%'
-         </if>
-     </where>
- </select>
-
- <select id="findById">
-     SELECT
-     *
-     FROM product
-     where id = #{id}
- </select>
--->
-    <!--<update id="updateProductById">
-        UPDATE product
-        SET name = #{name},selling_price = #{sellingPrice}, supplying_price = #{supplyingPrice}, description =
-        #{description}, img = #{img} where id = #{id}
-    </update>
-
-
-    <delete id="deleteAll">
-        DELETE FROM product WHERE id IN
+    <delete id="deleteSubImgs">
+        DELETE FROM detail_img
+        WHERE id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
+            #{item.id}
         </foreach>
-    </delete>-->
-
+    </delete>
 </mapper>

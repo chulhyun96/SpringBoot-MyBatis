@@ -38,4 +38,7 @@ public class ProductRequest {
                 .deliveryType(foundProduct.getDeliveryType())
                 .build();
     }
+    public int getImagesSize() {
+        return images.size();
+    }
 }

@@ -28,4 +28,6 @@ public interface ProductRepository {
     void updateSubImgs(List<DetailImg> uploadImgs);
 
     List<DetailImg> findImgs(Long id);
+
+    void deleteSubImgs(List<DetailImg> deleteImgs);
 }

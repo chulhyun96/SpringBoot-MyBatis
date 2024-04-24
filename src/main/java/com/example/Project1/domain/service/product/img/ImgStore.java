@@ -26,7 +26,7 @@ public class ImgStore {
     private String subImgDir;
 
     public Optional<List<UploadImg>> storeSubImgs(List<MultipartFile> imgFiles) {
-        if (imgFiles.isEmpty()) {
+        if (imgFiles.stream().allMatch(MultipartFile::isEmpty)) {
             return Optional.empty();
         }
         return Optional.of(imgFiles.stream()
@@ -45,13 +45,13 @@ public class ImgStore {
     }
 
     public Optional<UploadImg> storeMainImg(MultipartFile imgFile) throws IOException {
-        if (imgFile.isEmpty()) {
+        if (imgFile.isEmpty() || imgFile == null) {
             return Optional.empty();
         }
         String originalImgName = imgFile.getOriginalFilename();
         String storeImgName = createStoreImgName(originalImgName);
 
-        String fullMainImgPath = getFullMainImgPath(originalImgName);
+        String fullMainImgPath = getFullMainImgPath(storeImgName);
         createDirIfNonExist(fullMainImgPath);
 
         imgFile.transferTo(new File(fullMainImgPath));
