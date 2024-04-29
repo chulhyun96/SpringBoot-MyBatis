@@ -17,13 +17,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductRequest {
+
     private Long id;
 
     @NotBlank
     private String name;
 
-    @NotNull
-    @Range(min = 1000, max = 1000000)
+    @NotNull(message = "값을 입력해주세요.")
+    @Range(min = 50, max = 1_000_000)
     private Integer sellingPrice;
 
     @NotNull

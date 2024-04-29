@@ -9,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,10 +29,10 @@ public class ProductController {
         return "/admin/products/reg";
     }
     @PostMapping("/new")
-    public String reg(@Validated ProductRequest regRequest, BindingResult bindingResult, Model model) throws IOException {
+    public String reg(@Validated @ModelAttribute("product") ProductRequest regRequest, BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
             log.info("Reg Form Error : {}", bindingResult + "\n");
-            return "redirect:/admin/products/new";
+            return "/admin/products/reg";
         }
 
         service.reg(regRequest);

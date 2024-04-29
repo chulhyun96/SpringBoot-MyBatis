@@ -67,6 +67,7 @@ public class ProductService {
     private void updateSubImgs(ProductRequest updateRequest, List<DetailImg> foundImgs, List<DetailImg> updateDetailImgs) {
         // Request is more than FindImgs
         if (foundImgs.size() < updateRequest.getImagesSize()) {
+            // 1 2 -> abc -> 12c -> c
             List<DetailImg> extraImgs = updateDetailImgs.subList(foundImgs.size(), updateRequest.getImagesSize());
             repository.saveSubImg(extraImgs.stream()
                     .map(newDetailImg -> DetailImg.builder()
@@ -74,6 +75,8 @@ public class ProductService {
                             .path(newDetailImg.getPath())
                             .build())
                     .toList());
+            List<DetailImg> overwriteImgs = updateDetailImgs.subList(0, foundImgs.size());
+            repository.updateSubImgs(overwriteImgs);
             return;
         }
         // FindImgs is more than Request

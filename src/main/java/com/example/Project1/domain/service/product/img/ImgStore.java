@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +31,12 @@ public class ImgStore {
 
     public Optional<List<UploadImg>> storeSubImgs(List<MultipartFile> imgFiles, List<DetailImg> foundImgs) {
         if (imgFiles.stream().allMatch(MultipartFile::isEmpty)) {
-            return Optional.empty();
+            List<UploadImg> uploadImgs = new ArrayList<>();
+            for (DetailImg detailImg : foundImgs ) {
+                String path = detailImg.getPath();
+                uploadImgs.add(UploadImg.builder().storageName(path).build());
+            }
+            return Optional.of(uploadImgs);
         }
         return Optional.of(imgFiles.stream()
                 .map(subImgFile -> {
@@ -53,7 +59,7 @@ public class ImgStore {
 
     public Optional<UploadImg> storeMainImg(MultipartFile imgFile, Product product) throws IOException {
         if (imgFile.isEmpty()) {
-            return Optional.empty();
+            return Optional.ofNullable(product.getCurrentImg(product.getImg()));
         }
         String originalImgName = imgFile.getOriginalFilename();
 

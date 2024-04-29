@@ -46,4 +46,8 @@ public class Product {
                 .deliveryType(updateRequest.getDeliveryType())
                 .build();
     }
+
+    public UploadImg getCurrentImg(String path) {
+        return UploadImg.builder().storageName(path).build();
+    }
 }
