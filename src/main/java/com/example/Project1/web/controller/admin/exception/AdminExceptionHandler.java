@@ -27,5 +27,3 @@ public class AdminExceptionHandler {
         modelAndView.setViewName(ERROR_PATH + "4xx");
         modelAndView.addObject("message",ex.getMessage());
         return modelAndView;
-    }
-}

@@ -11,7 +11,7 @@
 <main layout:fragment="main" class="n-panel n-main-panel d:flex flex-direction:column">
     <!--item 삭제-->
     <h1 th:text="${loginMember}"></h1>
-    <form  method="post" class="flex flex-col w-full">
+    <form method="post" class="flex flex-col w-full">
         <table class="n-table n-table-style:striped">
             <thead>
             <tr>
@@ -32,8 +32,8 @@
                     <label th:for="${product.id}"></label>
                 </td>
                 <td scope="col" th:text="${product.name}">상품 이름</td>
-                <td scope="col" th:text="${product.sellingPrice}">판매가</td>
-                <td scope="col" th:text="${product.supplyingPrice}">공급가</td>
+                <td scope="col" th:text="${{product.sellingPrice}}">판매가</td>
+                <td scope="col" th:text="${{product.supplyingPrice}}">공급가</td>
                 <td scope="col">
                     <!--클릭 상세 페이지-->
                     <a th:href="@{/admin/products/{id}(id=${product.id})}">
@@ -41,7 +41,7 @@
                     </a>
                     <!--클릭 상세 페이지-->
                 </td>
-                <td scope="col" th:text="${#dates.format(product.regDate, 'yyyy-MM-dd') }">등록일자</td>
+                <td scope="col" th:text="${product.regDate}">등록일자</td>
 
             </tr>
             </tbody>
@@ -60,8 +60,3 @@
             </button>
             <!--item 삭제-->
         </div>
-    </form>
-
-</main>
-</body>
-</html>

@@ -29,9 +29,11 @@ public class ProductController {
         return "/admin/products/reg";
     }
     @PostMapping("/new")
-    public String reg(@Validated @ModelAttribute("product") ProductRequest regRequest, BindingResult bindingResult) throws IOException {
+    public String reg(@Validated @ModelAttribute("product") ProductRequest regRequest, BindingResult bindingResult, Model model) throws IOException {
         if (bindingResult.hasErrors()) {
             log.info("Reg Form Error : {}", bindingResult + "\n");
+            model.addAttribute("categories", service.getCategories());
+            model.addAttribute("deliveryTypes", service.getDeliveryTypes());
             return "admin/products/reg";
         }
 
@@ -62,7 +64,6 @@ public class ProductController {
     public String showList(Model model) {
         List<ProductListView> list = service.getList();
         model.addAttribute("products", list);
-        log.info("Product list.size : {}", list.size());
         return "/admin/products/list";
     }
 }

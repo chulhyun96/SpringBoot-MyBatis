@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Builder
 @Data
@@ -18,7 +21,8 @@ public class Product {
     private Integer sellingPrice;
     private String img;
     private String description;
-    private String regDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate regDate;
     private Long categoryId;
     private Long deliveryType;
 

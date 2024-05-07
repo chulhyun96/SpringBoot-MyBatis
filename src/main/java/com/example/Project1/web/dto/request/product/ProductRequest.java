@@ -8,8 +8,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -25,10 +28,12 @@ public class ProductRequest {
 
     @NotNull(message = "값을 입력해주세요.")
     @Range(min = 50, max = 1_000_000)
+    @NumberFormat(pattern = "###,###")
     private Integer sellingPrice;
 
     @NotNull
     @Range(min = 1_000, max = 1_000_000)
+    @NumberFormat(pattern = "###,###")
     private Integer supplyingPrice;
 
     @NotBlank
@@ -40,7 +45,8 @@ public class ProductRequest {
     @NotNull
     private List<MultipartFile> images;
 
-    private String regDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate regDate;
 
     @NotNull
     private Long categoryId;
